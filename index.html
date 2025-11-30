@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Tracking Lab</title>
+  <style>
+    body {
+      background-color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    input, button {
+      margin: 5px 0;
+      padding: 8px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Web Tracking Lab</h1>
+
+  <label for="cookieName">Cookie Name:</label><br>
+  <input type="text" id="cookieName"><br>
+
+  <label for="cookieValue">Cookie Value:</label><br>
+  <input type="text" id="cookieValue"><br>
+
+  <button onclick="setCookie()">Set Cookie</button>
+
+  <script>
+    function setCookie() {
+      const name = document.getElementById('cookieName').value;
+      const value = document.getElementById('cookieValue').value;
+      if (name && value) {
+        document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=/`;
+        alert(`Cookie "${name}" set!`);
+      } else {
+        alert("Please enter both name and value.");
+      }
+    }
+  </script>
+</body>
+</html>
+import http.server
+import socketserver
+
+PORT = 8080  # Changed from 8000 to avoid conflict
+
+Handler = http.server.SimpleHTTPRequestHandler
+
+with socketserver.TCPServer(("", PORT), Handler) as httpd:
+    print(f"Serving at http://localhost:{PORT}")
+    httpd.serve_forever()
