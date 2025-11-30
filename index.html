@@ -1,56 +1,58 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Web Tracking Lab</title>
-  <style>
-    body {
-      background-color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      color: #333;
-    }
-    input, button {
-      margin: 5px 0;
-      padding: 8px;
-      font-size: 14px;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pizza Maker — Web Game</title>
+  https://fonts.googleapis.com
+  https://fonts.gstatic.com
+  https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap
+  style.css
 </head>
 <body>
-  <h1>Web Tracking Lab</h1>
+  <header>
+    <h1>🍕 Pizza Maker</h1>
+    <p>Build the pizza to match the order. Drag toppings onto the pizza (or click to auto-place), then <strong>Bake</strong>!</p>
+  </header>
 
-  <label for="cookieName">Cookie Name:</label><br>
-  <input type="text" id="cookieName"><br>
+  <main>
+    <section class="panel">
+      <div class="score-time">
+        <div>Score: <span id="score">0</span></div>
+        <div>Time: <span id="time">60</span>s</div>
+      </div>
+      <div class="order-box">
+        <h2>Order</h2>
+        <ul id="orderList"></ul>
+        <button id="newOrderBtn" class="secondary">New Order</button>
+      </div>
+      <div class="controls">
+        <button id="bakeBtn" class="primary">Bake ✅</button>
+        <button id="undoBtn" class="secondary">Undo Last</button>
+        <button id="clearBtn" class="secondary">Clear Pizza</button>
+        <button id="restartBtn" class="secondary">Restart ⟲</button>
+      </div>
+    </section>
 
-  <label for="cookieValue">Cookie Value:</label><br>
-  <input type="text" id="cookieValue"><br>
+    <section class="play">
+      <div class="palette" id="palette">
+        <h3>Toppings</h3>
+        <!-- Palette items inserted by JS -->
+      </div>
 
-  <button onclick="setCookie()">Set Cookie</button>
+      <div class="board">
+        <div id="pizzaArea" class="pizza" aria-label="Pizza area" tabindex="0"></div>
+      </div>
+    </section>
+  </main>
 
-  <script>
-    function setCookie() {
-      const name = document.getElementById('cookieName').value;
-      const value = document.getElementById('cookieValue').value;
-      if (name && value) {
-        document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; path=/`;
-        alert(`Cookie "${name}" set!`);
-      } else {
-        alert("Please enter both name and value.");
-      }
-    }
-  </script>
+  <footer>
+    <small>Made with ❤ for a quick GitHub Pages demo. Drag & drop works on desktop; tap/click on mobile. Double‑click a topping to remove it.</small>
+  </footer>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  script.js</script>
 </body>
 </html>
-import http.server
-import socketserver
-
-PORT = 8080  # Changed from 8000 to avoid conflict
-
-Handler = http.server.SimpleHTTPRequestHandler
-
-with socketserver.TCPServer(("", PORT), Handler) as httpd:
-    print(f"Serving at http://localhost:{PORT}")
-    httpd.serve_forever()
