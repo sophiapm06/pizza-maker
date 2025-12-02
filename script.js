@@ -1,5 +1,13 @@
 
-// Basic pizza-making game logic
+const introScreen = document.getElementById('introScreen');
+const gameScreen = document.getElementById('gameScreen');
+const playBtn = document.getElementById('playBtn');
+
+playBtn.addEventListener('click', () => {
+  introScreen.classList.add('hidden');
+  gameScreen.classList.remove('hidden');
+});
+
 const scoreEl = document.getElementById('score');
 const timeEl = document.getElementById('time');
 const orderList = document.getElementById('orderList');
@@ -13,19 +21,19 @@ const palette = document.getElementById('palette');
 const toast = document.getElementById('toast');
 
 const INGREDIENTS = [
-  { key: 'cheese', label: 'Cheese', color: '#ffd84e' },
-  { key: 'pepperoni', label: 'Pepperoni', color: '#b12626' },
-  { key: 'mushroom', label: 'Mushrooms', color: '#c9b097' },
-  { key: 'olive', label: 'Olives', color: '#141414' },
-  { key: 'pepper', label: 'Peppers', color: '#2ecc71' },
-  { key: 'onion', label: 'Onions', color: '#a064c4' },
+  { key: 'cheese', label: 'Cheese', color: '#fffacd' },
+  { key: 'pepperoni', label: 'Pepperoni', color: '#ff6b6b' },
+  { key: 'mushroom', label: 'Mushrooms', color: '#d2b48c' },
+  { key: 'olive', label: 'Olives', color: '#4b0082' },
+  { key: 'pepper', label: 'Peppers', color: '#98fb98' },
+  { key: 'onion', label: 'Onions', color: '#dda0dd' },
 ];
 
 let score = 0;
-let time = 60; // seconds
+let time = 60;
 let timerId = null;
 let currentOrder = [];
-let placed = []; // stack of placed topping elements
+let placed = [];
 
 function showToast(msg) {
   toast.textContent = msg;
@@ -38,10 +46,9 @@ function formatOrder(order) {
 }
 
 function randomOrder() {
-  // Always include cheese; plus 2-4 random toppings
   const keys = INGREDIENTS.map(i => i.key);
   const extraKeys = keys.filter(k => k !== 'cheese');
-  const count = Math.floor(Math.random() * 3) + 2; // 2..4
+  const count = Math.floor(Math.random() * 3) + 2;
   const order = new Set(['cheese']);
   while (order.size < count + 1) {
     order.add(extraKeys[Math.floor(Math.random() * extraKeys.length)]);
@@ -89,7 +96,6 @@ function undoLast() {
 }
 
 function addTopping(type, x, y) {
-  // Clamp within pizza area
   const rect = pizzaArea.getBoundingClientRect();
   const size = 28;
   const px = Math.min(Math.max(x - rect.left - size/2, 6), rect.width - size - 6);
@@ -100,7 +106,6 @@ function addTopping(type, x, y) {
   el.style.left = `${px}px`;
   el.style.top = `${py}px`;
   el.dataset.type = type;
-  el.title = 'Double‑click to remove';
   el.addEventListener('dblclick', () => {
     const idx = placed.indexOf(el);
     if (idx >= 0) placed.splice(idx, 1);
@@ -113,7 +118,6 @@ function addTopping(type, x, y) {
 function evaluatePizza() {
   const onPizza = new Set(placed.map(el => el.dataset.type));
   const required = new Set(currentOrder);
-  // exact set match (duplicates ignored)
   const extra = [...onPizza].filter(x => !required.has(x));
   const missing = [...required].filter(x => !onPizza.has(x));
   const ok = extra.length === 0 && missing.length === 0;
@@ -126,18 +130,13 @@ function bake() {
     score += 10;
     scoreEl.textContent = score;
     showToast('Perfect! +10');
-    // new order
     currentOrder = randomOrder();
     renderOrder();
     resetBoard();
   } else {
     let msg = '';
-    if (missing.length) {
-      msg += 'Missing: ' + formatOrder(missing).join(', ');
-    }
-    if (extra.length) {
-      msg += (msg ? ' | ' : '') + 'Extra: ' + formatOrder(extra).join(', ');
-    }
+    if (missing.length) msg += 'Missing: ' + formatOrder(missing).join(', ');
+    if (extra.length) msg += (msg ? ' | ' : '') + 'Extra: ' + formatOrder(extra).join(', ');
     showToast(msg || 'Not quite!');
   }
 }
@@ -163,12 +162,7 @@ function renderPalette() {
     row.append(sw, lab, addBtn);
     palette.appendChild(row);
 
-    // Drag & drop
-    row.addEventListener('dragstart', e => {
-      e.dataTransfer.setData('text/plain', item.key);
-    });
-
-    // Click to auto-place at random location
+    row.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', item.key));
     addBtn.addEventListener('click', () => {
       const rect = pizzaArea.getBoundingClientRect();
       const x = rect.left + 20 + Math.random() * (rect.width - 40);
@@ -202,13 +196,11 @@ function restart() {
   newOrderBtn.disabled = false;
 }
 
-// Init
 renderPalette();
 enableDrop();
 newOrder();
 startTimer();
 
-// Wire up buttons
 bakeBtn.addEventListener('click', bake);
 undoBtn.addEventListener('click', undoLast);
 clearBtn.addEventListener('click', resetBoard);

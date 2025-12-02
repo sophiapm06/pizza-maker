@@ -4,54 +4,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pizza Maker — Web Game</title>
+  <title>Sophia's Pizzeria — Web Game</title>
   https://fonts.googleapis.com
   https://fonts.gstatic.com
-  https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap
+  https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap
   style.css
 </head>
 <body>
-  <header>
-    <h1>🍕 Pizza Maker</h1>
-    <p>Build the pizza to match the order. Drag toppings onto the pizza (or click to auto-place), then <strong>Bake</strong>!</p>
-  </header>
+  <!-- Intro Screen -->
+  <div id="introScreen" class="intro">
+    <h1>Welcome to Sophia's Pizzeria! 🍕</h1>
+    <p>Get ready to make the cutest pizzas ever!</p>
+    <button id="playBtn" class="play-btn">Play</button>
+  </div>
 
-  <main>
-    <section class="panel">
-      <div class="score-time">
-        <div>Score: <span id="score">0</span></div>
-        <div>Time: <span id="time">60</span>s</div>
-      </div>
-      <div class="order-box">
-        <h2>Order</h2>
-        <ul id="orderList"></ul>
-        <button id="newOrderBtn" class="secondary">New Order</button>
-      </div>
-      <div class="controls">
-        <button id="bakeBtn" class="primary">Bake ✅</button>
-        <button id="undoBtn" class="secondary">Undo Last</button>
-        <button id="clearBtn" class="secondary">Clear Pizza</button>
-        <button id="restartBtn" class="secondary">Restart ⟲</button>
-      </div>
-    </section>
+  <!-- Game Screen -->
+  <div id="gameScreen" class="hidden">
+    <header>
+      <h1>🍕 Sophia's Pizzeria</h1>
+      <p>Match the order and bake your perfect pizza!</p>
+    </header>
 
-    <section class="play">
-      <div class="palette" id="palette">
-        <h3>Toppings</h3>
-        <!-- Palette items inserted by JS -->
-      </div>
+    <main>
+      <section class="panel">
+        <div class="score-time">
+          <div>Score: <span id="score">0</span></div>
+          <div>Time: <span id="time">60</span>s</div>
+        </div>
+        <div class="order-box">
+          <h2>Order</h2>
+          <ul id="orderList"></ul>
+          <button id="newOrderBtn" class="secondary">New Order</button>
+        </div>
+        <div class="controls">
+          <button id="bakeBtn" class="primary">Bake ✅</button>
+          <button id="undoBtn" class="secondary">Undo Last</button>
+          <button id="clearBtn" class="secondary">Clear Pizza</button>
+          <button id="restartBtn" class="secondary">Restart ⟲</button>
+        </div>
+      </section>
 
-      <div class="board">
-        <div id="pizzaArea" class="pizza" aria-label="Pizza area" tabindex="0"></div>
-      </div>
-    </section>
-  </main>
+      <section class="play">
+        <div class="palette" id="palette">
+          <h3>Toppings</h3>
+        </div>
 
-  <footer>
-    <small>Made with ❤ for a quick GitHub Pages demo. Drag & drop works on desktop; tap/click on mobile. Double‑click a topping to remove it.</small>
-  </footer>
+        <div class="board">
+          <div id="pizzaArea" class="pizza" aria-label="Pizza area" tabindex="0"></div>
+        </div>
+      </section>
+    </main>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <footer>
+      <small>Made with ❤ for Sophia's Pizzeria. Drag & drop works on desktop; tap/click on mobile.</small>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </div>
 
   script.js</script>
 </body>
