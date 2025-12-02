@@ -5,50 +5,64 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sophia's Pizzeria — Web Game</title>
-  <link rel
-</>
-  <!-- Order Screen -->
-  <div id="orderScreen" class="screen">
-    <div class="customer">
-      <img src="https://i.imgur.comng
+  https://fonts.googleapis.com
+  https://fonts.gstatic.com
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&
+  style.css
+</head>
+<body>
+  <!-- WELCOME SCREEN -->
+  <section id="welcomeScreen" class="screen center">
+    <h1 class="title">Welcome to Sophia’s Pizzeria! 🍕</h1>
+    <p class="tagline">Tap Play to start taking orders and cooking cute pizzas.</p>
+    <button id="playBtn" class="btn btn-primary">Play</button>
+  </section>
+
+  <!-- ORDER (Left) + ACTIONS (Right) -->
+  <section id="orderScreen" class="screen split hidden">
+    <div class="left card customer">
+      <div class="avatar">😊</div>
       <div class="speech">
-        <h2>Customer Order:</h2>
+        <h2 id="orderHeading">Customer Order</h2>
         <p id="orderText">Loading order...</p>
+        <p id="feedbackText" class="feedback hidden"></p>
       </div>
     </div>
-    <button id="startBtn" class="primary">Start Cooking</button>
-  </div>
+    <div class="right card actions">
+      <h3>Ready to cook?</h3>
+      <p>Match the toppings and bake time exactly.</p>
+      <button id="startBtn" class="btn btn-primary">Start Cooking →</button>
+      <button id="nextOrderBtn" class="btn btn-secondary hidden">Next Order →</button>
+    </div>
+  </section>
 
-  <!-- Kitchen Screen -->
-  <div id="kitchenScreen" class="screen hidden">
-    <header>
-      Sophia's Kitchen</h1>
-    </header>
-    <main>
-      <div class="controls">
-        <label>Bake Time: <input type="number" id="bakeTime" min="5" max="30" value="10"> sec</label>
-        <button id="bakeBtn" class="primary">Bake Pizza</button>
-      </div>
-      <div class="workspace">
-        <div class="palette" id="palette">
-          <h3>Toppings</h3>
-        </div>
-        <div class="pizza" id="pizzaArea"></div>
-      </div>
-    </main>
-  </div>
+  <!-- KITCHEN (Left Palette & Time) + (Right Pizza Board) -->
+  <section id="kitchenScreen" class="screen split hidden">
+    <div class="left card palette">
+      <h3>🌸 Toppings</h3>
+      <div id="palette" class="palette-grid"></div>
 
-  <!-- Feedback Screen -->
-  <div id="feedbackScreen" class="screen hidden">
-    <div class="customer">
-      https://i.imgur.com/8Km9tLL.png
-      <div class="speech">
-        <h2 id="feedbackText">Checking your pizza...</h2>
+      <div class="bake-time">
+        <label for="bakeTime"><strong>Bake Time</strong></label>
+        <input type="range" id="bakeTime" min="5" max="30" value="10" />
+        <div><span id="bakeDisplay">10</span> sec</div>
+      </div>
+
+      <div class="kitchen-buttons">
+        <button id="clearBtn" class="btn btn-secondary">Clear Pizza</button>
+        <button id="backToOrderBtn" class="btn btn-secondary">← Back to Order</button>
       </div>
     </div>
-    <button id="nextOrderBtn" class="primary">Next Order</button>
-  </div>
 
+    <div class="right card board">
+      <h3>🍕 Build the Pizza</h3>
+      <div id="pizzaArea" class="pizza" aria-label="Pizza work area"></div>
+      <button id="bakeBtn" class="btn btn-primary bake-btn">Bake Pizza ✅</button>
+    </div>
+  </section>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
   script.js</script>
 </body>
 </html>
+
