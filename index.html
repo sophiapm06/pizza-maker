@@ -5,61 +5,48 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sophia's Pizzeria — Web Game</title>
-  https://fonts.googleapis.com
-  https://fonts.gstatic.com
-  https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Pacifico&display=swap
-  style.css
-</head>
-<body>
-  <!-- Intro Screen -->
-  <div id="introScreen" class="intro">
-    <h1>Welcome to Sophia's Pizzeria! 🍕</h1>
-    <p>Get ready to make the cutest pizzas ever!</p>
-    <button id="playBtn" class="play-btn">Play</button>
+  <link rel
+</>
+  <!-- Order Screen -->
+  <div id="orderScreen" class="screen">
+    <div class="customer">
+      <img src="https://i.imgur.comng
+      <div class="speech">
+        <h2>Customer Order:</h2>
+        <p id="orderText">Loading order...</p>
+      </div>
+    </div>
+    <button id="startBtn" class="primary">Start Cooking</button>
   </div>
 
-  <!-- Game Screen -->
-  <div id="gameScreen" class="hidden">
+  <!-- Kitchen Screen -->
+  <div id="kitchenScreen" class="screen hidden">
     <header>
-      <h1>🍕 Sophia's Pizzeria</h1>
-      <p>Match the order and bake your perfect pizza!</p>
+      Sophia's Kitchen</h1>
     </header>
-
     <main>
-      <section class="panel">
-        <div class="score-time">
-          <div>Score: <span id="score">0</span></div>
-          <div>Time: <span id="time">60</span>s</div>
-        </div>
-        <div class="order-box">
-          <h2>Order</h2>
-          <ul id="orderList"></ul>
-          <button id="newOrderBtn" class="secondary">New Order</button>
-        </div>
-        <div class="controls">
-          <button id="bakeBtn" class="primary">Bake ✅</button>
-          <button id="undoBtn" class="secondary">Undo Last</button>
-          <button id="clearBtn" class="secondary">Clear Pizza</button>
-          <button id="restartBtn" class="secondary">Restart ⟲</button>
-        </div>
-      </section>
-
-      <section class="play">
+      <div class="controls">
+        <label>Bake Time: <input type="number" id="bakeTime" min="5" max="30" value="10"> sec</label>
+        <button id="bakeBtn" class="primary">Bake Pizza</button>
+      </div>
+      <div class="workspace">
         <div class="palette" id="palette">
           <h3>Toppings</h3>
         </div>
-
-        <div class="board">
-          <div id="pizzaArea" class="pizza" aria-label="Pizza area" tabindex="0"></div>
-        </div>
-      </section>
+        <div class="pizza" id="pizzaArea"></div>
+      </div>
     </main>
+  </div>
 
-    <footer>
-      <small>Made with ❤ for Sophia's Pizzeria. Drag & drop works on desktop; tap/click on mobile.</small>
-    </footer>
-
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <!-- Feedback Screen -->
+  <div id="feedbackScreen" class="screen hidden">
+    <div class="customer">
+      https://i.imgur.com/8Km9tLL.png
+      <div class="speech">
+        <h2 id="feedbackText">Checking your pizza...</h2>
+      </div>
+    </div>
+    <button id="nextOrderBtn" class="primary">Next Order</button>
   </div>
 
   script.js</script>

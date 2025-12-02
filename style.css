@@ -2,36 +2,26 @@
 body {
   margin: 0; font-family: 'Nunito', sans-serif; background: #ffe6f0; color: #5c2a4d;
 }
-.intro {
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
-  height: 100vh; text-align: center; background: linear-gradient(135deg, #ffd6e8, #ffe6f0);
+.screen {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100vh; text-align: center;
 }
-.intro h1 {
-  font-family: 'Pacifico', cursive; font-size: 2.5rem; color: #ff69b4;
-}
-.intro p { font-size: 1.2rem; margin-bottom: 1rem; }
-.play-btn {
-  background: #ff69b4; color: white; border: none; padding: 0.75rem 1.5rem; font-size: 1.2rem;
-  border-radius: 12px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-.play-btn:hover { background: #ff85c1; }
 .hidden { display: none; }
-
-header h1 { font-family: 'Pacifico', cursive; color: #ff69b4; }
-.panel, .palette, .board {
-  background: #fff0f6; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+.customer {
+  display: flex; align-items: center; gap: 1rem; background: #fff0f6; padding: 1rem; border-radius: 12px;
 }
-button.primary { background: #ff69b4; color: white; }
-button.secondary { background: #ffc0cb; color: #5c2a4d; }
+.avatar { width: 100px; border-radius: 50%; }
+.speech { background: #ffc0cb; padding: 1rem; border-radius: 12px; }
+button.primary {
+  background: #ff69b4; color: white; border: none; padding: 0.75rem 1.5rem; font-size: 1.2rem;
+  border-radius: 12px; cursor: pointer; margin-top: 1rem;
+}
+.workspace { display: flex; gap: 1rem; margin-top: 1rem; }
+.palette { background: #fff0f6; padding: 1rem; border-radius: 12px; }
 .pizza {
-  background: radial-gradient(circle at 50% 50%, #fff5cc 0%, #ffe680 45%, #ffcc66 46%, #ffcc66 52%, #e6a84d 53%, #e6a84d 100%);
-  border-radius: 50%; width: 520px; height: 520px; position: relative;
+  width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, #fff5cc, #ffcc66);
+  position: relative;
 }
-.topping.cheese { background: #fffacd; }
-.topping.pepperoni { background: #ff6b6b; }
-.topping.mushroom { background: #d2b48c; }
-.topping.olive { background: #4b0082; }
-.topping.pepper { background: #98fb98; }
-.topping.onion { background: #dda0dd; }
-.toast { background: #ffc0cb; color: #5c2a4d; padding: 0.5rem 1rem; border-radius: 8px; position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; }
-.toast.show { opacity: 1; }
+.topping {
+  position: absolute; width: 28px; height: 28px; border-radius: 50%;
+}
