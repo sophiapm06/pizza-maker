@@ -1,41 +1,111 @@
-:root { --bg: #fff5f9; --text: #3b224c; --accent: #ff4d8d; --accent-2: #ff85b3; --success: #8bd4a6; --card: #ffffff; --shadow: 0 8px 20px rgba(0,0,0,0.15) }
-* { box-sizing: border-box }
-html,body { height: 100% }
-body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Color Emoji", "Apple Color Emoji"; background: var(--bg); color: var(--text) }
-.screen { display: grid; place-items: center; min-height: 100vh; padding: 24px; text-align: center }
-.cute-title { font-size: clamp(20px, 5vw, 32px); margin: 8px 0 }
-.tagline { color: #7a5b8b; margin-bottom: 20px }
-.intro { display: grid; gap: 10px; justify-items: center }
-.avatar { width: min(80vw, 280px); filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25)) }
-.hidden { display: none !important }
-.btn { appearance: none; border: none; border-radius: 12px; padding: 12px 18px; font-weight: 700; cursor: pointer; background: var(--accent-2); color: #2a1438; box-shadow: var(--shadow) }
-.btn.primary { background: var(--accent); color: #fff }
-.btn.success { background: var(--success); color: #203d2f }
-.btn:active { transform: translateY(1px) }
-#hud { position: sticky; top: 0; display: flex; gap: 24px; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.85); backdrop-filter: blur(6px); box-shadow: var(--shadow) }
-.hud-item { font-weight: 700 }
-.station { display: grid; grid-template-columns: 280px 1fr 280px; gap: 20px; padding: 20px }
-.order-card, .palette { background: var(--card); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); border: 1px solid #ffd0e4 }
-.order-card h2, .palette h2 { margin: 0 0 8px }
-.order-list { list-style: none; padding: 0; margin: 0 }
-.order-list li { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px; border-bottom: 1px dashed #f3bfd5 }
-.order-notes { margin-top: 8px; color: #7a5b8b; font-size: 0.95rem }
-.kitchen { display: grid; gap: 12px; align-content: start }
-.pizza-area { position: relative; width: min(90vw, 460px); height: min(90vw, 460px); margin-inline: auto; border-radius: 16px; background: #ffe9f2; box-shadow: var(--shadow) }
-.pizza-base { position: absolute; inset: 10px; border-radius: 50%; background: radial-gradient(circle at 50% 50%, #f7c59f 0 46%, #d4a373 47% 100%) }
-.pizza-base::before { content: ""; position: absolute; inset: 28px; border-radius: 50%; background: #e45b7f99 }
-.topping-placed { position: absolute; font-size: clamp(24px, 5vw, 36px); filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.15)); transform-origin: center; user-select: none; pointer-events: none }
-.controls { display: flex; gap: 10px; justify-content: center }
-.feedback { min-height: 24px; text-align: center; font-weight: 700; color: #7a5b8b }
-.topping-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px }
-.topping { display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 12px; background: #fafafa; box-shadow: var(--shadow); cursor: grab; border: 1px solid #ffd0e4 }
-.topping:active { cursor: grabbing }
-.topping .emoji { font-size: 24px }
-.topping .name { font-weight: 700 }
-.hint { color: #7a5b8b; font-size: 0.9rem }
-.app-footer { padding: 20px; text-align: center; color: #7a5b8b }
-.confetti { position: absolute; width: 8px; height: 14px; background: var(--accent); opacity: 0.9; transform: translateY(-20px); animation: fall 900ms ease-out forwards }
-@keyframes fall { to { transform: translateY(120px) rotate(180deg); opacity: 0 } }
-.wave-arm { transform-origin: 8px 0px; animation: wave 1.4s ease-in-out infinite }
-@keyframes wave { 0%, 100% { transform: translate(152px,144px) rotate(-8deg) } 50% { transform: translate(152px,144px) rotate(10deg) } }
-@media (max-width: 960px) { .station { grid-template-columns: 1fr } #hud { justify-content: space-between; padding-inline: 20px } }
+
+/* Simple Pizza App CSS */
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 10px;
+  background-color: lightblue;
+}
+
+.hidden {
+  display: none;
+}
+
+h1 {
+  text-align: center;
+}
+
+.card {
+  background-color: white;
+  border: 1px solid black;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.pizza-section {
+  display: flex;
+  gap: 10px;
+}
+
+.palette-section {
+  width: 50%;
+}
+
+.pizza-board {
+  width: 50%;
+}
+
+.customer {
+  display: flex;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  background-color: yellow;
+  text-align: center;
+  line-height: 50px;
+  margin-right: 10px;
+}
+
+button {
+  padding: 5px 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.palette-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tbtn {
+  background-color: lightgray;
+  border: 1px solid black;
+  padding: 5px;
+}
+
+.pizza {
+  width: 200px;
+  height: 200px;
+  background-color: yellow;
+  border: 2px solid brown;
+  margin: 10px auto;
+  position: relative;
+}
+
+.topping {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+}
+
+.topping.cheese { background-color: white; }
+.topping.pepperoni { background-color: red; }
+.topping.mushroom { background-color: brown; }
+.topping.olive { background-color: purple; }
+.topping.pepper { background-color: green; }
+.topping.onion { background-color: pink; }
+
+.bake-time {
+  text-align: center;
+  margin: 10px 0;
+}
+
+#bakeTime {
+  width: 100%;
+}
+
+.feedback {
+  font-weight: bold;
+}
+
+.feedback.success {
+  color: green;
+}
+
+.feedback.error {
+  color: red;
+}

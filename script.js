@@ -1,173 +1,139 @@
-// Pink & cute Sophia's Pizzariea — keeps original gameplay
+// Sophia's Pizza Game - Student Project
+// TODO: Complete the functions below to make the game work!
 
-const toppings = [
-  { key: 'cheese', name: 'Cheese', emoji: '\uD83E\uDDC0', min: 1, max: 3 },
-  { key: 'pepperoni', name: 'Pepperoni', emoji: '\uD83C\uDF56', min: 0, max: 5 },
-  { key: 'mushroom', name: 'Mushroom', emoji: '\uD83C\uDF44', min: 0, max: 4 },
-  { key: 'pepper', name: 'Bell Pepper', emoji: '\uD83E\uDED1', min: 0, max: 4 },
-  { key: 'onion', name: 'Onion', emoji: '\uD83E\uDDC5', min: 0, max: 3 },
-  { key: 'olive', name: 'Olive', emoji: '\uD83E\uDED2', min: 0, max: 6 },
-  { key: 'pineapple', name: 'Pineapple', emoji: '\uD83C\uDF4D', min: 0, max: 3 },
+// Some basic variables to get you started
+let currentOrder = null;
+let myToppings = [];
+
+// Sample pizza orders - feel free to add more!
+const orders = [
+  {
+    customer: "Alex",
+    description: "I want cheese and olives, bake for 15 seconds!",
+    toppings: ["cheese", "olive"],
+    bakeTime: 15,
+  },
+  {
+    customer: "Sam",
+    description: "Pepperoni and mushrooms please, 12 seconds!",
+    toppings: ["pepperoni", "mushroom"],
+    bakeTime: 12,
+  },
+  // TODO: Add more orders here!
 ];
 
-let required = {};
-let placed = [];
-let score = 0;
-let streak = 0;
-let timeLeft = 60;
-let timerId = null;
+// Available toppings
+const toppings = [
+  "cheese",
+  "pepperoni",
+  "mushroom",
+  "olive",
+  "pepper",
+  "onion",
+];
 
-const startScreen = document.getElementById('startScreen');
-const btnPlay = document.getElementById('btnPlay');
-const hud = document.getElementById('hud');
-const timeEl = document.getElementById('time');
-const scoreEl = document.getElementById('score');
-const streakEl = document.getElementById('streak');
-const gameEl = document.getElementById('game');
-const orderList = document.getElementById('orderList');
-const orderNotes = document.getElementById('orderNotes');
-const pizzaArea = document.getElementById('pizzaArea');
-const toppingListEl = document.getElementById('toppingList');
-const feedbackEl = document.getElementById('feedback');
-const btnUndo = document.getElementById('btnUndo');
-const btnBake = document.getElementById('btnBake');
-const btnClear = document.getElementById('btnClear');
-const endScreen = document.getElementById('endScreen');
-const finalScoreEl = document.getElementById('finalScore');
-const btnRestart = document.getElementById('btnRestart');
+// Getting HTML elements (this is done for you)
+const playButton = document.getElementById("playBtn");
+const startButton = document.getElementById("startBtn");
+const bakeButton = document.getElementById("bakeBtn");
 
-const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+// TODO: Get more elements you need here
+// const something = document.getElementById('...');
 
-function makeOrder() {
-  const req = {}; toppings.forEach(t => req[t.key] = 0);
-  req.cheese = rand(1, 3);
-  const others = toppings.filter(t => t.key !== 'cheese');
-  const howMany = rand(3, 5);
-  const chosen = others.slice().sort(() => Math.random() - 0.5).slice(0, howMany);
-  chosen.forEach(t => { req[t.key] = rand(t.min, t.max); });
-  const notes = ['Make it snappy!', 'Extra tasty please.', 'For a hungry cadet.', 'Keep it balanced.', 'No burnt crust!'];
-  return { req, note: pick(notes) };
-}
-
-function renderOrder() {
-  orderList.innerHTML = '';
-  Object.keys(required).forEach(key => {
-    const count = required[key];
-    const t = toppings.find(x => x.key === key);
-    const li = document.createElement('li');
-    li.innerHTML = '<span class="emoji">' + t.emoji + '</span> <span class="name">' + t.name + '</span> <span class="count">x ' + count + '</span>';
-    orderList.appendChild(li);
-  });
-}
-
-function renderPalette() {
-  toppingListEl.innerHTML = '';
-  toppings.forEach(t => {
-    const div = document.createElement('div');
-    div.className = 'topping';
-    div.draggable = true;
-    div.dataset.key = t.key;
-    div.innerHTML = '<span class="emoji">' + t.emoji + '</span><span class="name">' + t.name + '</span>';
-    div.addEventListener('dragstart', (ev) => { ev.dataTransfer.setData('text/plain', t.key); });
-    div.addEventListener('click', () => {
-      const rect = pizzaArea.getBoundingClientRect();
-      const x = rand(40, rect.width - 40);
-      const y = rand(40, rect.height - 40);
-      placeTopping(t.key, x, y);
-    });
-    toppingListEl.appendChild(div);
-  });
-}
-
-function placeTopping(key, x, y) {
-  const rot = rand(-35, 35);
-  const span = document.createElement('span');
-  span.className = 'topping-placed';
-  span.textContent = toppings.find(t => t.key === key).emoji;
-  span.style.left = x + 'px';
-  span.style.top = y + 'px';
-  span.style.transform = 'rotate(' + rot + 'deg)';
-  span.dataset.key = key;
-  pizzaArea.appendChild(span);
-  placed.push({ key, x, y, rot, el: span });
-  beep(660, 50, 'square', 0.03); // tick sound
-}
-
-pizzaArea.addEventListener('dragover', (ev) => { ev.preventDefault(); });
-pizzaArea.addEventListener('drop', (ev) => {
-  ev.preventDefault();
-  const key = ev.dataTransfer.getData('text/plain');
-  const rect = pizzaArea.getBoundingClientRect();
-  const x = ev.clientX - rect.left;
-  const y = ev.clientY - rect.top;
-  placeTopping(key, x, y);
-});
-
-function clearPizza() { placed.forEach(p => p.el.remove()); placed = []; }
-function undoLast() { const last = placed.pop(); if (last && last.el) last.el.remove(); }
-
-function countsByKey(arr) {
-  const map = {}; toppings.forEach(t => map[t.key] = 0);
-  arr.forEach(p => { map[p.key] = (map[p.key] || 0) + 1; });
-  return map;
-}
-
-function evaluateOrder() {
-  const have = countsByKey(placed);
-  let perfect = true; const diffs = [];
-  Object.keys(required).forEach(k => {
-    const need = required[k]; const got = have[k] || 0;
-    if (need !== got) { perfect = false; const d = got - need; if (d > 0) diffs.push('-' + d + ' ' + k); else if (d < 0) diffs.push('+' + Math.abs(d) + ' ' + k); }
-  });
-
-  if (perfect) {
-    const bonus = 100 + streak * 25 + Math.max(0, timeLeft - 40);
-    score += bonus; streak += 1; scoreEl.textContent = score; streakEl.textContent = streak;
-    feedbackEl.textContent = 'Perfect! +' + bonus + ' points';
-    confettiBurst();
-    nextOrder();
-  } else {
-    const penalty = 30;
-    streak = 0; score = Math.max(0, score - penalty);
-    scoreEl.textContent = score; streakEl.textContent = streak;
-    feedbackEl.textContent = 'Not quite: ' + diffs.join(', ') + ' (−' + penalty + ')';
-  }
-}
-
-function nextOrder() { clearPizza(); const o = makeOrder(); required = o.req; renderOrder(); orderNotes.textContent = o.note; }
-
+// Function to start the game
 function startGame() {
-  startScreen.classList.add('hidden'); hud.classList.remove('hidden'); gameEl.classList.remove('hidden');
-  score = 0; streak = 0; timeLeft = 60; placed = []; scoreEl.textContent = score; streakEl.textContent = streak; timeEl.textContent = timeLeft;
-  renderPalette(); nextOrder(); if (timerId) clearInterval(timerId);
-  timerId = setInterval(() => { timeLeft -= 1; timeEl.textContent = timeLeft; if (timeLeft <= 0) endGame(); }, 1000);
+  console.log("Game started!");
+  // TODO: Hide welcome screen and show order screen
+  // TODO: Load a new order
 }
 
-function endGame() { if (timerId) clearInterval(timerId); hud.classList.add('hidden'); gameEl.classList.add('hidden'); endScreen.classList.remove('hidden'); finalScoreEl.textContent = score; }
-
-btnPlay.addEventListener('click', startGame);
-btnBake.addEventListener('click', evaluateOrder);
-btnClear.addEventListener('click', () => { clearPizza(); feedbackEl.textContent = 'Cleared.'; });
-btnUndo.addEventListener('click', () => { undoLast(); feedbackEl.textContent = 'Undid last topping.'; });
-btnRestart.addEventListener('click', () => { endScreen.classList.add('hidden'); startGame(); });
-
-function confettiBurst() {
-  const colors = ['#ff4d8d', '#ff85b3', '#8bd4a6', '#f4a261', '#e9c46a'];
-  const rect = pizzaArea.getBoundingClientRect();
-  for (let i = 0; i < 24; i++) {
-    const c = document.createElement('div'); c.className = 'confetti';
-    c.style.left = Math.floor(Math.random() * rect.width) + 'px';
-    c.style.top  = Math.floor(Math.random() * 40) + 'px';
-    c.style.background = colors[Math.floor(Math.random() * colors.length)];
-    c.style.transform = 'translateY(-20px) rotate(' + (Math.floor(Math.random() * 180) - 90) + 'deg)';
-    pizzaArea.appendChild(c); setTimeout(() => c.remove(), 1000);
-  }
-  beep(880, 120, 'triangle', 0.05); setTimeout(() => beep(1200, 140, 'triangle', 0.05), 120);
+// Function to get a random order
+function getRandomOrder() {
+  console.log("Getting random order...");
+  // TODO: Pick a random order from the orders array
+  // HINT: Use Math.random() and Math.floor()
+  return orders[0]; // This just returns the first one for now
 }
 
-let audioCtx = null; function ensureAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
-function beep(freq = 880, ms = 80, type = 'sine', vol = 0.05) { ensureAudio(); const o = audioCtx.createOscillator(); const g = audioCtx.createGain(); o.type = type; o.frequency.value = freq; g.gain.value = vol; o.connect(g); g.connect(audioCtx.destination); o.start(); setTimeout(() => { o.stop(); }, ms); }
+// Function to show a new order to the player
+function loadOrder() {
+  console.log("Loading new order...");
+  currentOrder = getRandomOrder();
+  // TODO: Update the HTML to show customer name and description
+  // TODO: Clear any previous feedback
+}
 
-pizzaArea.tabIndex = 0;
-pizzaArea.addEventListener('keydown', (ev) => { const keys = { '1': 'cheese', '2': 'pepperoni', '3': 'mushroom', '4': 'pepper', '5': 'onion', '6': 'olive', '7': 'pineapple' }; if (keys[ev.key]) { const rect = pizzaArea.getBoundingClientRect(); placeTopping(keys[ev.key], Math.floor(Math.random() * (rect.width - 80)) + 40, Math.floor(Math.random() * (rect.height - 80)) + 40); } });
+// Function to start cooking (go to kitchen screen)
+function startCooking() {
+  console.log("Starting to cook!");
+  // TODO: Hide order screen and show kitchen screen
+  // TODO: Set up the topping buttons
+  // TODO: Clear the pizza area
+}
+
+// Function to create topping buttons
+function createToppingButtons() {
+  console.log("Creating topping buttons...");
+  // TODO: Loop through the toppings array
+  // TODO: Create a button for each topping
+  // TODO: Add click event to each button
+}
+
+// Function to add a topping to the pizza
+function addTopping(toppingName) {
+  console.log("Adding topping: " + toppingName);
+  // TODO: Add the topping to myToppings array
+  // TODO: Create a visual topping element on the pizza
+  // TODO: Position it randomly on the pizza
+}
+
+// Function to clear all toppings from pizza
+function clearPizza() {
+  console.log("Clearing pizza...");
+  // TODO: Empty the myToppings array
+  // TODO: Remove all topping elements from pizza area
+}
+
+// Function to bake the pizza and check if it's correct
+function bakePizza() {
+  console.log("Baking pizza...");
+  // TODO: Get the bake time from the slider
+  // TODO: Check if toppings match the order
+  // TODO: Check if bake time matches the order
+  // TODO: Show success or failure message
+  // TODO: Go back to order screen
+}
+
+// Function to check if the pizza is correct
+function checkOrder() {
+  console.log("Checking order...");
+  // TODO: Compare myToppings with currentOrder.toppings
+  // TODO: Compare bake time with currentOrder.bakeTime
+  // TODO: Return true if both match, false otherwise
+  return false; // Change this!
+}
+
+// Function to show different screens
+function showScreen(screenName) {
+  console.log("Showing screen: " + screenName);
+  // TODO: Hide all screens
+  // TODO: Show only the requested screen
+}
+
+// Function to update bake time display
+function updateBakeTime() {
+  console.log("Updating bake time display...");
+  // TODO: Get value from bake time slider
+  // TODO: Update the display text
+}
+
+// Event listeners (connecting buttons to functions)
+playButton.addEventListener("click", startGame);
+startButton.addEventListener("click", startCooking);
+bakeButton.addEventListener("click", bakePizza);
+
+// TODO: Add more event listeners for other buttons
+// TODO: Add event listener for bake time slider
+
+console.log("Pizza game loaded! Click Play to start.");
+console.log("TODO: Complete all the functions to make the game work!");
