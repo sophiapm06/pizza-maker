@@ -12,7 +12,7 @@ if (start && img) {
   start.addEventListener('mouseleave', () => { img.style.transform = ''; });
 }
 
-// Elements for screens
+// Screen handles
 const startScreen = document.getElementById('startScreen');
 const customerScreen = document.getElementById('customerScreen');
 const hud = document.getElementById('hud');
@@ -39,7 +39,7 @@ const pizzaArea = document.getElementById('pizzaArea');
 const toppingListEl = document.getElementById('toppingList');
 const feedbackEl = document.getElementById('feedback');
 
-// Customer talk bubble
+// Customer bubble
 const customerBubble = document.getElementById('customerBubble');
 
 // Game state
@@ -57,10 +57,9 @@ let required = {};
 let placed = [];
 let score = 0;
 let streak = 0;
-let timeLeft = 90; // starts AFTER transition to kitchen
+let timeLeft = 90; // timer starts when entering kitchen
 let timerId = null;
 
-// Utils
 const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -71,8 +70,9 @@ function makeOrder(){
   const howMany = rand(3, 5);
   const chosen = others.slice().sort(() => Math.random() - 0.5).slice(0, howMany);
   chosen.forEach(t => { req[t.key] = rand(t.min, t.max); });
-  const notes = ['Make it snappy!', 'Extra tasty please.', 'For a hungry cadet.', 'Keep it balanced.', 'No burnt crust!'];
-  return { req, note: pick(notes) };
+  const polite = ['Could I have ', 'May I get ', 'Could you make '];
+  const end = [' on my pizza, please?', ' on my pie, please?', ' please.'];
+  return { req, opening: pick(polite), ending: pick(end), note: pick(['Make it snappy!','Extra tasty please.','For a hungry cadet.','Keep it balanced.','No burnt crust!']) };
 }
 
 function orderToText(req){
@@ -135,7 +135,7 @@ pizzaArea.addEventListener('drop', ev => {
 });
 
 function clearPizza(){ placed.forEach(p => p.el.remove()); placed = []; }
-function undoLast(){ const last = placed.pop(); if (last && last.el) last.el.remove(); }
+function undoLast(){ const last = placed.pop(); if(last && last.el) last.el.remove(); }
 
 function countsByKey(arr){ const map = {}; toppings.forEach(t => map[t.key] = 0); arr.forEach(p => { map[p.key] = (map[p.key] || 0) + 1; }); return map; }
 
@@ -152,17 +152,13 @@ function evaluateOrder(){
     const bonus = 100 + streak * 25 + Math.max(0, timeLeft - 60);
     score += bonus; streak += 1; scoreEl.textContent = score; streakEl.textContent = streak;
     feedbackEl.textContent = 'Perfect! +' + bonus + ' points';
-    nextOrder();
+    cutsceneNextOrder(); // jump to customer for next order, then return
   } else {
     const penalty = 30;
     streak = 0; score = Math.max(0, score - penalty);
     scoreEl.textContent = score; streakEl.textContent = streak;
     feedbackEl.textContent = 'Not quite: ' + diffs.join(', ') + ' (−' + penalty + ')';
   }
-}
-
-function nextOrder(){
-  clearPizza(); const o = makeOrder(); required = o.req; renderOrder(); orderNotes.textContent = o.note;
 }
 
 function showScreen(hideEl, showEl){
@@ -174,48 +170,81 @@ function showScreen(hideEl, showEl){
   }
 }
 
-function startFlow(){
-  // Generate the first customer order
-  const o = makeOrder(); required = o.req; const text = 'Request: ' + orderToText(required);
-  customerBubble.textContent = text;
-  // Transition: Intro → Customer
-  showScreen(startScreen, customerScreen);
-  // Brief mouth animation
-  customerScreen.classList.add('talking');
-  setTimeout(() => customerScreen.classList.remove('talking'), Math.min(4000, Math.max(1500, text.length * 35)));
+function speak(text){
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1.0; u.pitch = 1.05; u.lang = 'en-US';
+    speechSynthesis.speak(u);
+  } catch (e) { /* ignore */ }
 }
 
-function continueToKitchen(){
-  // Transition: Customer → Kitchen; start HUD + timer
+function setCustomerLine(order){
+  customerBubble.textContent = order.opening + orderToText(order.req) + order.ending;
+}
+
+function cutsceneShow(order, autoReturn){
+  setCustomerLine(order);
+  showScreen(gameEl, customerScreen); // in case coming from kitchen
+  customerScreen.classList.add('speaking');
+  speak(customerBubble.textContent);
+  const ms = Math.min(2400, Math.max(1400, customerBubble.textContent.length * 30));
+  setTimeout(() => customerScreen.classList.remove('speaking'), ms);
+  if (autoReturn){ setTimeout(() => continueToKitchen(order), ms + 200); }
+}
+
+function continueToKitchen(order){
   showScreen(customerScreen, gameEl);
   hud.classList.remove('hidden');
-  score = 0; streak = 0; timeLeft = 90; placed = [];
-  scoreEl.textContent = score; streakEl.textContent = streak; timeEl.textContent = timeLeft;
-  renderPalette(); renderOrder(); orderNotes.textContent = 'Fresh order just in!';
-  if (timerId) clearInterval(timerId);
-  timerId = setInterval(() => { timeLeft -= 1; timeEl.textContent = timeLeft; if (timeLeft <= 0) endGame(); }, 1000);
+  if (timerId == null){ // first time entering kitchen; start timer
+    score = 0; streak = 0; timeLeft = 90; placed = [];
+    scoreEl.textContent = score; streakEl.textContent = streak; timeEl.textContent = timeLeft;
+    renderPalette();
+    timerId = setInterval(() => { timeLeft -= 1; timeEl.textContent = timeLeft; if (timeLeft <= 0) endGame(); }, 1000);
+  }
+  required = order.req;
+  renderOrder();
+  orderNotes.textContent = order.note;
+  clearPizza();
 }
 
-function endGame(){ if (timerId) clearInterval(timerId); hud.classList.add('hidden'); gameEl.classList.add('hidden'); document.getElementById('endScreen').classList.remove('hidden'); document.getElementById('finalScore').textContent = score; }
+function cutsceneNextOrder(){
+  const o = makeOrder();
+  cutsceneShow(o, true); // auto return after short speak
+}
+
+function startFlow(){
+  const first = makeOrder();
+  showScreen(startScreen, customerScreen); // intro → customer
+  customerScreen.classList.add('speaking');
+  setCustomerLine(first);
+  speak(customerBubble.textContent);
+  setTimeout(() => customerScreen.classList.remove('speaking'), Math.min(3000, Math.max(1600, customerBubble.textContent.length * 32)));
+  // Wait for user to continue the first time
+  btnContinue.onclick = () => continueToKitchen(first);
+}
+
+function endGame(){
+  if (timerId) clearInterval(timerId);
+  timerId = null;
+  hud.classList.add('hidden');
+  gameEl.classList.add('hidden');
+  document.getElementById('endScreen').classList.remove('hidden');
+  document.getElementById('finalScore').textContent = score;
+}
 
 // Events
 btnPlay.addEventListener('click', startFlow);
-btnSpeakOrder.addEventListener('click', () => {
-  const text = customerBubble.textContent;
-  try {
-    const u = new SpeechSynthesisUtterance(text);
-    u.rate = 1.0; u.pitch = 1.0; u.lang = 'en-US';
-    speechSynthesis.speak(u);
-    customerScreen.classList.add('talking');
-    setTimeout(() => customerScreen.classList.remove('talking'), Math.min(4000, Math.max(1500, text.length * 35)));
-  } catch (e) { /* no-op */ }
-});
-btnContinue.addEventListener('click', continueToKitchen);
-
+btnSpeakOrder.addEventListener('click', () => { speak(customerBubble.textContent); customerScreen.classList.add('speaking'); setTimeout(()=>customerScreen.classList.remove('speaking'), 1600); });
 btnBake.addEventListener('click', evaluateOrder);
 btnClear.addEventListener('click', () => { clearPizza(); feedbackEl.textContent = 'Cleared.'; });
 btnUndo.addEventListener('click', () => { undoLast(); feedbackEl.textContent = 'Undid last topping.'; });
-btnRestart.addEventListener('click', () => { document.getElementById('endScreen').classList.add('hidden'); showScreen(document.getElementById('endScreen'), startScreen); });
+btnRestart.addEventListener('click', () => {
+  document.getElementById('endScreen').classList.add('hidden');
+  // Reset to intro
+  showScreen(document.getElementById('endScreen'), startScreen);
+  // Reset state
+  required = {}; placed = []; score = 0; streak = 0; timeLeft = 90; if(timerId){clearInterval(timerId); timerId=null;} hud.classList.add('hidden');
+});
 
 // Keyboard quick add
 pizzaArea.tabIndex = 0;

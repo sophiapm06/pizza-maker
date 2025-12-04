@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea • Intro → Customer → Kitchen</title>
+  <title>Sophia's Pizzariea • Intro → Customer Cutscene → Kitchen (v6)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Intro start screen (photo-based waving girl) -->
+  <!-- Intro (photo stays the same) -->
   <div id="startScreen" class="screen">
     <div class="intro">
       <div class="intro-wrap">
@@ -22,7 +22,7 @@
     <button id="btnPlay" class="btn primary">▶ Play</button>
   </div>
 
-  <!-- Customer screen: v4-style military avatar speaks the order, then continue -->
+  <!-- Customer Cutscene (v4-style military avatar) -->
   <div id="customerScreen" class="screen hidden">
     <div class="customer-stage">
       <div class="customer-figure">
@@ -37,7 +37,7 @@
           <rect id="custMouthTalk" x="114" y="98" width="12" height="5" rx="2" fill="#6e472b" />
           <!-- cap -->
           <rect x="96" y="56" width="48" height="14" rx="7" fill="#39424a" />
-          <!-- torso ACUs -->
+          <!-- torso ACUs (stylized) -->
           <rect x="92" y="120" width="60" height="64" rx="12" fill="#7a8b7c" />
           <rect x="98" y="128" width="24" height="9" fill="#a6b3a8" opacity="0.85" />
           <rect x="122" y="142" width="26" height="9" fill="#626c61" opacity="0.85" />
@@ -70,13 +70,11 @@
   <!-- Kitchen game (streamlined v5) -->
   <main id="game" class="hidden">
     <section class="work-area">
-      <!-- Left: toppings palette -->
       <aside class="palette card" id="palette">
         <h2>Toppings</h2>
         <div class="topping-list" id="toppingList"></div>
       </aside>
 
-      <!-- Right: pizza prep -->
       <section class="kitchen card">
         <h2>Pizza</h2>
         <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
@@ -91,7 +89,6 @@
       </section>
     </section>
 
-    <!-- Compact order ticket below -->
     <aside class="order-card card compact" id="orderCard">
       <h2>Order Ticket</h2>
       <ul id="orderList" class="order-list"></ul>
@@ -113,6 +110,7 @@
         <li>Press <strong>Play</strong> to meet the customer and hear their order.</li>
         <li>Continue to the kitchen and match the ticket (types & counts).</li>
         <li>Drag toppings or click to auto-place; then <strong>Bake & Serve</strong>.</li>
+        <li>Each next order shows a quick customer cutscene first, then returns to the kitchen.</li>
         <li>You have 90 seconds per shift.</li>
       </ul>
     </details>
