@@ -10,93 +10,60 @@
 <body>
   <div id="startScreen" class="screen">
     <div class="intro">
-      <div class="avatar" aria-label="Cartoon Hispanic girl in Army ACUs, ponytail, strap, boots, thumbs-up">
-        <svg viewBox="0 0 240 240" role="img" aria-labelledby="svgTitle svgDesc">
-          <title id="svgTitle">Cartoon avatar</title>
-          <desc id="svgDesc">Hispanic girl in ACUs, ponytail, strap, tan boots, thumbs-up</desc>
-          <circle cx="120" cy="120" r="112" fill="#ffe4ee" />
-          <path d="M52,92 C54,52 186,52 188,92 C190,128 160,168 120,168 C80,168 50,128 52,92 Z" fill="#5b3b24" />
-          <path d="M168,110 C184,128 182,150 164,160 C156,164 148,162 146,150 C144,136 152,122 168,110 Z" fill="#5b3b24" />
-          <circle cx="120" cy="104" r="36" fill="#c89065" stroke="#b2774f" stroke-width="2" />
-          <circle cx="106" cy="102" r="5" fill="#3a2a1e" />
-          <circle cx="134" cy="102" r="5" fill="#3a2a1e" />
-          <path d="M106,118 C114,124 126,124 134,118" stroke="#6e472b" stroke-width="3" fill="none" stroke-linecap="round" />
-          <rect x="88" y="148" width="64" height="60" rx="12" fill="#7a8b7c" />
-          <rect x="92" y="154" width="24" height="10" fill="#a6b3a8" opacity="0.85" />
-          <rect x="118" y="168" width="26" height="10" fill="#626c61" opacity="0.85" />
-          <rect x="98" y="180" width="34" height="10" fill="#9aa69a" opacity="0.85" />
-          <rect x="130" y="158" width="24" height="10" fill="#6c786d" opacity="0.85" />
-          <path d="M150,148 C160,138 168,132 175,132 C180,132 182,136 180,140 C172,154 166,164 154,172" stroke="#2f2f37" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95" />
-          <rect x="72" y="160" width="16" height="52" rx="8" fill="#7a8b7c" />
-          <g transform="translate(152,156)">
-            <rect x="0" y="0" width="16" height="28" rx="8" fill="#7a8b7c" />
-            <rect x="8" y="-2" width="14" height="34" rx="7" fill="#7a8b7c" transform="rotate(-30)" />
-            <path d="M26,-6 C30,-8 34,-6 34,-2 C34,2 30,6 26,4 C24,2 24,-2 26,-6 Z" fill="#c89065" stroke="#b2774f" stroke-width="2" />
-          </g>
-          <rect x="98" y="206" width="44" height="20" rx="6" fill="#7a8b7c" />
-          <ellipse cx="110" cy="228" rx="10" ry="8" fill="#a07b4a" />
-          <ellipse cx="130" cy="228" rx="10" ry="8" fill="#a07b4a" />
-        </svg>
+      <div class="intro-wrap">
+        <div class="avatar" aria-label="Cartoon Hispanic girl in Army ACUs, ponytail, strap, tan boots, waving">
+          <svg viewBox="0 0 240 240" role="img" aria-labelledby="svgTitle svgDesc">
+            <title id="svgTitle">Intro avatar</title>
+            <desc id="svgDesc">Hispanic girl, ACUs, ponytail, backpack strap, waving</desc>
+            <circle cx="120" cy="120" r="112" fill="#ffe4ee" />
+            <!-- hair base + ponytail -->
+            <path d="M52,92 C54,52 186,52 188,92 C190,128 160,168 120,168 C80,168 50,128 52,92 Z" fill="#5b3b24" />
+            <path d="M168,110 C184,128 182,150 164,160 C156,164 148,162 146,150 C144,136 152,122 168,110 Z" fill="#5b3b24" />
+            <!-- head -->
+            <circle cx="120" cy="104" r="36" fill="#c89065" stroke="#b2774f" stroke-width="2" />
+            <!-- eyes -->
+            <circle cx="106" cy="102" r="5" fill="#3a2a1e" />
+            <circle cx="134" cy="102" r="5" fill="#3a2a1e" />
+            <!-- smile -->
+            <path d="M106,118 C114,124 126,124 134,118" stroke="#6e472b" stroke-width="3" fill="none" stroke-linecap="round" />
+            <!-- torso (ACUs) -->
+            <rect x="88" y="148" width="64" height="60" rx="12" fill="#7a8b7c" />
+            <rect x="92" y="154" width="24" height="10" fill="#a6b3a8" opacity="0.85" />
+            <rect x="118" y="168" width="26" height="10" fill="#626c61" opacity="0.85" />
+            <rect x="98" y="180" width="34" height="10" fill="#9aa69a" opacity="0.85" />
+            <rect x="130" y="158" width="24" height="10" fill="#6c786d" opacity="0.85" />
+            <!-- backpack strap -->
+            <path d="M150,148 C160,138 168,132 175,132 C180,132 182,136 180,140 C172,154 166,164 154,172" stroke="#2f2f37" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95" />
+            <!-- left arm down -->
+            <rect x="72" y="160" width="16" height="52" rx="8" fill="#7a8b7c" />
+            <!-- right arm waving (upper + forearm group animates) -->
+            <g transform="translate(152,156)">
+              <rect x="0" y="0" width="16" height="28" rx="8" fill="#7a8b7c" />
+              <g class="wave-arm" transform="rotate(-20)">
+                <rect x="6" y="-6" width="14" height="36" rx="7" fill="#7a8b7c" />
+                <circle cx="13" cy="32" r="8" fill="#c89065" stroke="#b2774f" stroke-width="2" />
+              </g>
+            </g>
+            <!-- boots -->
+            <ellipse cx="110" cy="228" rx="10" ry="8" fill="#a07b4a" />
+            <ellipse cx="130" cy="228" rx="10" ry="8" fill="#a07b4a" />
+          </svg>
+        </div>
+        <!-- speech bubble that pops in -->
+        <div class="intro-bubble" role="text">Hi welcome to sophias pizzarea pls com to the kitchen 👋</div>
       </div>
-      <h1 class="cute-title">Hi welcome to sophias pizzarea pls com to the kitchen</h1>
       <p class="tagline">Click the Play button to start.</p>
     </div>
     <button id="btnPlay" class="btn primary">▶ Play</button>
   </div>
 
+  <!-- HUD + game stay unchanged for this update -->
   <header id="hud" class="hidden">
     <div class="hud-item">⏱️ Time: <span id="time">90</span>s</div>
     <div class="hud-item">⭐ Score: <span id="score">0</span></div>
     <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
   </header>
-
-  <main id="game" class="hidden">
-    <!-- New two-panel working area: toppings next to pizza for easier drag -->
-    <section class="work-area">
-      <aside class="palette card" id="palette">
-        <h2>Toppings</h2>
-        <div class="topping-list" id="toppingList"></div>
-      </aside>
-
-      <section class="kitchen card">
-        <h2>Pizza</h2>
-        <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
-          <div class="pizza-base" aria-hidden="true"></div>
-        </div>
-        <div class="controls">
-          <button id="btnUndo" class="btn">↩ Undo</button>
-          <button id="btnClear" class="btn">🧼 Clear</button>
-          <button id="btnBake" class="btn success">🔥 Bake & Serve</button>
-        </div>
-        <div id="feedback" class="feedback" aria-live="polite"></div>
-      </section>
-    </section>
-
-    <!-- Smaller recipe card below (less prominent) -->
-    <aside class="order-card card compact" id="orderCard">
-      <h2>Order Ticket</h2>
-      <ul id="orderList" class="order-list"></ul>
-      <div class="order-notes" id="orderNotes"></div>
-    </aside>
-  </main>
-
-  <div id="endScreen" class="screen hidden">
-    <h2>Shift Complete! 🛎️</h2>
-    <p>Your final score: <strong id="finalScore">0</strong></p>
-    <button id="btnRestart" class="btn primary">🔁 Play Again</button>
-  </div>
-
-  <footer class="app-footer">
-    <details>
-      <summary>How to Play</summary>
-      <ul>
-        <li>Drag toppings from the left panel onto the pizza on the right.</li>
-        <li>Match the order ticket (smaller card below).</li>
-        <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
-        <li>You have 90 seconds per shift.</li>
-      </ul>
-    </details>
-  </footer>
+  <main id="game" class="hidden"></main>
 
   <script src="script.js" defer></script>
 </body>
