@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea • Intro → Customer Cutscene → Kitchen (v6)</title>
+  <title>Sophia's Pizzariea • Cutscene Flow + Levels (v6.1)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -28,27 +28,20 @@
       <div class="customer-figure">
         <svg viewBox="0 0 240 240" class="big-customer">
           <circle cx="120" cy="120" r="110" fill="#ffdbe9" />
-          <!-- head -->
           <circle cx="120" cy="84" r="32" fill="#c48a60" stroke="#a56f47" stroke-width="2" />
-          <!-- eyes -->
           <circle cx="108" cy="82" r="5" fill="#3a2a1e" />
           <circle cx="132" cy="82" r="5" fill="#3a2a1e" />
-          <!-- mouth animates while talking -->
           <rect id="custMouthTalk" x="114" y="98" width="12" height="5" rx="2" fill="#6e472b" />
-          <!-- cap -->
           <rect x="96" y="56" width="48" height="14" rx="7" fill="#39424a" />
-          <!-- torso ACUs (stylized) -->
           <rect x="92" y="120" width="60" height="64" rx="12" fill="#7a8b7c" />
           <rect x="98" y="128" width="24" height="9" fill="#a6b3a8" opacity="0.85" />
           <rect x="122" y="142" width="26" height="9" fill="#626c61" opacity="0.85" />
           <rect x="104" y="156" width="34" height="9" fill="#9aa69a" opacity="0.85" />
           <rect x="132" y="134" width="22" height="9" fill="#6c786d" opacity="0.85" />
-          <!-- salute arm -->
           <g class="salute-arm" transform="translate(152,126)">
             <rect x="0" y="0" width="16" height="30" rx="8" fill="#7a8b7c" />
             <rect x="8" y="-2" width="12" height="34" rx="7" fill="#7a8b7c" transform="rotate(-35)" />
           </g>
-          <!-- left arm -->
           <rect x="84" y="126" width="16" height="44" rx="8" fill="#7a8b7c" />
         </svg>
       </div>
@@ -62,22 +55,26 @@
 
   <!-- HUD -->
   <header id="hud" class="hidden">
-    <div class="hud-item">⏱️ Time: <span id="time">90</span>s</div>
-    <div class="hud-item">⭐ Score: <span id="score">0</span></div>
+    <div class="hud-item">📍 Level: <span id="level">1</span>/3</div>
+    <div class="hud-item">⏱️ Time: <span id="time">60</span>s</div>
+    <div class="hud-item">💵 Tips: $<span id="tips">0</span></div>
     <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
   </header>
 
-  <!-- Kitchen game (streamlined v5) -->
+  <!-- Kitchen game: 3-column layout (Order | Pizza | Toppings) -->
   <main id="game" class="hidden">
-    <section class="work-area">
-      <aside class="palette card" id="palette">
-        <h2>Toppings</h2>
-        <div class="topping-list" id="toppingList"></div>
+    <section class="work-area three">
+      <!-- Left: Order Ticket -->
+      <aside class="order-card card compact" id="orderCard">
+        <h2>Order Ticket</h2>
+        <ul id="orderList" class="order-list"></ul>
+        <div class="order-notes" id="orderNotes"></div>
       </aside>
 
+      <!-- Middle: Pizza prep -->
       <section class="kitchen card">
         <h2>Pizza</h2>
-        <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
+        <div id="pizzaArea" class="pizza-area" role="region" aria-label="Pizza prep area">
           <div class="pizza-base" aria-hidden="true"></div>
         </div>
         <div class="controls">
@@ -87,19 +84,20 @@
         </div>
         <div id="feedback" class="feedback" aria-live="polite"></div>
       </section>
-    </section>
 
-    <aside class="order-card card compact" id="orderCard">
-      <h2>Order Ticket</h2>
-      <ul id="orderList" class="order-list"></ul>
-      <div class="order-notes" id="orderNotes"></div>
-    </aside>
+      <!-- Right: Toppings palette -->
+      <aside class="palette card" id="palette">
+        <h2>Toppings</h2>
+        <div class="topping-list" id="toppingList"></div>
+      </aside>
+    </section>
   </main>
 
   <!-- End screen -->
   <div id="endScreen" class="screen hidden">
     <h2>Shift Complete! 🛎️</h2>
-    <p>Your final score: <strong id="finalScore">0</strong></p>
+    <p>Total tips: $<strong id="finalTips">0</strong></p>
+    <p id="finalMsg"></p>
     <button id="btnRestart" class="btn primary">🔁 Play Again</button>
   </div>
 
@@ -108,10 +106,10 @@
       <summary>How to Play</summary>
       <ul>
         <li>Press <strong>Play</strong> to meet the customer and hear their order.</li>
-        <li>Continue to the kitchen and match the ticket (types & counts).</li>
-        <li>Drag toppings or click to auto-place; then <strong>Bake & Serve</strong>.</li>
-        <li>Each next order shows a quick customer cutscene first, then returns to the kitchen.</li>
-        <li>You have 90 seconds per shift.</li>
+        <li>Kitchen layout is <strong>Order (left)</strong>, <strong>Pizza (middle)</strong>, <strong>Toppings (right)</strong>.</li>
+        <li>Three levels: 60s each — Level 1 (4 toppings), Level 2 (8), Level 3 (12).</li>
+        <li>Drag or click toppings; then <strong>Bake & Serve</strong>.</li>
+        <li>After each level, tips add up; final screen shows your total and outcome.</li>
       </ul>
     </details>
   </footer>
