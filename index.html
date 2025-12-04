@@ -38,59 +38,46 @@
           <ellipse cx="130" cy="228" rx="10" ry="8" fill="#a07b4a" />
         </svg>
       </div>
-      <h1 class="cute-title">Hi! WELCOME to Sophia's delicious pizzeria. Please make ur way to the kitchen</h1>
+      <h1 class="cute-title">Hi welcome to sophias pizzarea pls com to the kitchen</h1>
       <p class="tagline">Click the Play button to start.</p>
     </div>
     <button id="btnPlay" class="btn primary">▶ Play</button>
   </div>
 
   <header id="hud" class="hidden">
-    <div class="hud-item">⏱️ Time: <span id="time">60</span>s</div>
+    <div class="hud-item">⏱️ Time: <span id="time">90</span>s</div>
     <div class="hud-item">⭐ Score: <span id="score">0</span></div>
     <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
   </header>
 
   <main id="game" class="hidden">
-    <section class="station">
-      <!-- CUSTOMER QUEUE LEFT -->
-      <aside class="customer card" id="customerCard" aria-label="Customer order">
-        <h2>Customer</h2>
-        <div id="customerFigure" class="customer-figure" aria-hidden="true"></div>
-        <div id="orderBubble" class="speech-bubble">…</div>
-        <div class="tts-controls">
-          <label>Voice <select id="voiceSelect"></select></label>
-          <label>Rate <input type="range" id="voiceRate" min="0.5" max="1.5" step="0.1" value="1.0" /></label>
-          <label>Pitch <input type="range" id="voicePitch" min="0.8" max="1.4" step="0.1" value="1.0" /></label>
-          <button id="btnSpeak" class="btn">🔈 Speak order</button>
-        </div>
+    <!-- New two-panel working area: toppings next to pizza for easier drag -->
+    <section class="work-area">
+      <aside class="palette card" id="palette">
+        <h2>Toppings</h2>
+        <div class="topping-list" id="toppingList"></div>
       </aside>
 
-      <!-- ORDER TICKET RIGHT -->
-      <aside class="order-card card" id="orderCard">
-        <h2>Order Ticket</h2>
-        <ul id="orderList" class="order-list"></ul>
-        <div class="order-notes" id="orderNotes"></div>
-      </aside>
-
-      <!-- KITCHEN CENTER -->
-      <section class="kitchen">
+      <section class="kitchen card">
+        <h2>Pizza</h2>
         <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
           <div class="pizza-base" aria-hidden="true"></div>
         </div>
         <div class="controls">
-          <button id="btnUndo" class="btn">↩ Undo last</button>
+          <button id="btnUndo" class="btn">↩ Undo</button>
           <button id="btnClear" class="btn">🧼 Clear</button>
           <button id="btnBake" class="btn success">🔥 Bake & Serve</button>
         </div>
         <div id="feedback" class="feedback" aria-live="polite"></div>
       </section>
-
-      <aside class="palette card" id="palette">
-        <h2>Toppings</h2>
-        <div class="topping-list" id="toppingList"></div>
-        <p class="hint">Tip: drag toppings onto the pizza — or tap/click to auto-place.</p>
-      </aside>
     </section>
+
+    <!-- Smaller recipe card below (less prominent) -->
+    <aside class="order-card card compact" id="orderCard">
+      <h2>Order Ticket</h2>
+      <ul id="orderList" class="order-list"></ul>
+      <div class="order-notes" id="orderNotes"></div>
+    </aside>
   </main>
 
   <div id="endScreen" class="screen hidden">
@@ -103,10 +90,10 @@
     <details>
       <summary>How to Play</summary>
       <ul>
-        <li>Read the customer bubble or the order ticket.</li>
-        <li>Add toppings to the pizza to match <em>type</em> and <em>counts</em>.</li>
+        <li>Drag toppings from the left panel onto the pizza on the right.</li>
+        <li>Match the order ticket (smaller card below).</li>
         <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
-        <li>You have 60 seconds per shift. Keep the streak alive for extra score.</li>
+        <li>You have 90 seconds per shift.</li>
       </ul>
     </details>
   </footer>
