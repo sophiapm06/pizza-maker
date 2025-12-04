@@ -1,372 +1,72 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzeria — Web Game</title>
-
-  <!-- Cute fonts -->
-  https://fonts.googleapis.com
-  <link rel="preconnect" href="https://fonts.gstatic.com"oogleapis.com/css2?family=400;700&family=Pacifico&display=swap
-
-  <style>
-    /* Theme */
-    :root {
-      --bg: #ffe6f0;
-      --text: #5c2a4d;
-      --card: #fff0f6;
-      --accent: #ff69b4;
-      --accent2: #ffc0cb;
-      --border: #f3b7c9;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; font-family: 'Nunito', sans-serif;
-      background: var(--bg); color: var(--text);
-    }
-
-    /* Screens */
-    .screen.center {
-      min-height: 100vh; display: grid; place-items: center; text-align: center; padding: 1rem;
-    }
-    .screen.split {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 1rem; padding: 1rem; min-height: 100vh;
-    }
-    .hidden { display: none !important; }
-
-    /* Cards */
-    .card {
-      background: var(--card);
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 1rem;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-    }
-    .left { display: flex; align-items: center; gap: 1rem; }
-    .right { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; }
-
-    /* Welcome */
-    .title { font-family: 'Pacifico', cursive; color: var(--accent); font-size: 2.4rem; margin: 0 0 0.25rem; }
-    .tagline { margin: 0 0 1rem; }
-
-    /* Customer bubble */
-    .customer .avatar {
-      width: 72px; height: 72px; display: grid; place-items: center;
-      font-size: 42px; border-radius: 50%; background: #ffe;
-      border: 2px solid var(--border);
-    }
-    .customer .speech {
-      background: var(--accent2); padding: 0.75rem 1rem; border-radius: 12px;
-      position: relative; max-width: 560px;
-    }
-    .customer .speech::after {
-      content: ""; position: absolute; left: -10px; top: 18px;
-      width: 0; height: 0; border-right: 12px solid var(--accent2);
-      border-top: 12px solid transparent; border-bottom: 12px solid transparent;
-    }
-    .feedback { margin-top: 0.5rem; font-weight: 700; }
-
-    /* Buttons */
-    .btn {
-      border: none; border-radius: 12px; padding: 0.6rem 1rem;
-      font-weight: 700; cursor: pointer; transition: transform 0.05s, background 0.2s;
-    }
-    .btn:active { transform: scale(0.98); }
-    .btn-primary { background: var(--accent); color: #fff; }
-    .btn-primary:hover { background: #ff85c1; }
-    .btn-secondary { background: var(--accent2); color: var(--text); }
-    .btn-secondary:hover { background: #ffd1dc; }
-
-    /* Palette + Board */
-    .palette h3, .board h3 { margin: 0.25rem 0 0.5rem; }
-    .palette-grid { display: grid; gap: 0.5rem; grid-template-columns: 1fr 1fr; }
-    .palette-grid .tbtn {
-      background: #ffe; border: 2px solid var(--border);
-      border-radius: 10px; padding: 0.4rem 0.6rem; cursor: pointer; font-weight: 700;
-    }
-    .palette-grid .tbtn:hover { background: #fff7fa; }
-
-    .bake-time { margin-top: 0.75rem; text-align: center; }
-    #bakeTime { width: 100%; }
-    .kitchen-buttons { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-
-    /* Pizza board */
-    .pizza {
-      position: relative; width: 420px; height: 420px; border-radius: 50%;
-      background: radial-gradient(circle at 50% 50%, #fff5cc 0%, #ffe680 45%, #ffcc66 46%, #ffcc66 52%, #e6a84d 53%, #e6a84d 100%);
-      box-shadow: 0 0 0 16px #8b4513 inset, 0 6px 20px rgba(0,0,0,0.2);
-      outline: 2px dashed var(--border); margin: 0.5rem auto;
-    }
-    .topping {
-      position: absolute; width: 28px; height: 28px; border-radius: 50%;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.25); cursor: pointer;
-    }
-    .topping.cheese { background: #fffacd; opacity: 0.85; }
-    .topping.pepperoni { background: #ff6b6b; }
-    .topping.mushroom { background: #d2b48c; border-radius: 50% 50% 40% 40%; }
-    .topping.olive { background: #4b0082; box-shadow: 0 0 0 6px #6b2bb3 inset; }
-    .topping.pepper { background: #98fb98; border-radius: 40% 60% 60% 40%; }
-    .topping.onion { background: #dda0dd; box-shadow: 0 0 0 6px #eecdf5 inset; }
-
-    /* Toast */
-    .toast {
-      position: fixed; left: 50%; bottom: 12px; transform: translateX(-50%);
-      background: var(--accent2); color: var(--text);
-      border: 2px solid var(--border); border-radius: 12px;
-      padding: 0.5rem 0.75rem; opacity: 0; pointer-events: none; transition: opacity 0.25s;
-    }
-    .toast.show { opacity: 1; }
-
-    /* Responsive */
-    @media (max-width: 980px) {
-      .screen.split { grid-template-columns: 1fr; }
-      .left { justify-content: center; }
-    }
-  </style>
+  <title>Sophia's Pizzariea 🍕</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- WELCOME SCREEN -->
-  <section id="welcomeScreen" class="screen center">
-    <div class="card" style="max-width: 720px;">
-      <h1 class="title">Welcome to Sophia’s Pizzeria! 🍕</h1>
-      <p class="tagline">Tap Play to start taking orders and cooking cute pizzas.</p>
-      <button id="playBtn" class="btn btn-primary">Play</button>
-    </div>
-  </section>
+  <div id="startScreen" class="screen">
+    <h1>welcomes to sophias pizzariea</h1>
+    <p class="tagline">Click the Play button to start.</p>
+    <button id="btnPlay" class="btn primary">▶ Play</button>
+  </div>
 
-  <!-- ORDER (Left) + ACTIONS (Right) -->
-  <section id="orderScreen" class="screen split hidden">
-    <div class="left card customer">
-      <div class="avatar">😊</div>
-      <div class="speech">
-        <h2 id="orderHeading">Customer Order</h2>
-        <p id="orderText">Loading order...</p>
-        <p id="feedbackText" class="feedback hidden"></p>
-      </div>
-    </div>
-    <div class="right card actions">
-      <h3>Ready to cook?</h3>
-      <p>Match the toppings and bake time exactly.</p>
-      <button id="startBtn" class="btn btn-primary">Start Cooking →</button>
-      <button id="nextOrderBtn" class="btn btn-secondary hidden">Next Order →</button>
-    </div>
-  </section>
+  <header id="hud" class="hidden">
+    <div class="hud-item">⏱️ Time: <span id="time">60</span>s</div>
+    <div class="hud-item">⭐ Score: <span id="score">0</span></div>
+    <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
+  </header>
 
-  <!-- KITCHEN (Left Palette & Time) + (Right Pizza Board) -->
-  <section id="kitchenScreen" class="screen split hidden">
-    <div class="left card palette">
-      <h3>🌸 Toppings</h3>
-      <div id="palette" class="palette-grid"></div>
+  <main id="game" class="hidden">
+    <section class="station">
+      <aside class="order-card" id="orderCard">
+        <h2>Order Ticket</h2>
+        <ul id="orderList" class="order-list"></ul>
+        <div class="order-notes" id="orderNotes"></div>
+      </aside>
 
-      <div class="bake-time">
-        <label for="bakeTime"><strong>Bake Time</strong></label>
-        <input type="range" id="bakeTime" min="5" max="30" value="10" />
-        <div><span id="bakeDisplay">10</span> sec</div>
-      </div>
+      <section class="kitchen">
+        <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
+          <div class="pizza-base" aria-hidden="true"></div>
+        </div>
 
-      <div class="kitchen-buttons">
-        <button id="clearBtn" class="btn btn-secondary">Clear Pizza</button>
-        <button id="backToOrderBtn" class="btn btn-secondary">← Back to Order</button>
-      </div>
-    </div>
+        <div class="controls">
+          <button id="btnUndo" class="btn">↩ Undo last</button>
+          <button id="btnClear" class="btn">🧼 Clear</button>
+          <button id="btnBake" class="btn success">🔥 Bake & Serve</button>
+        </div>
 
-    <div class="right card board">
-      <h3>🍕 Build the Pizza</h3>
-      <div id="pizzaArea" class="pizza" aria-label="Pizza work area"></div>
-      <button id="bakeBtn" class="btn btn-primary bake-btn">Bake Pizza ✅</button>
-    </div>
-  </section>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+      </section>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <aside class="palette" id="palette">
+        <h2>Toppings</h2>
+        <div class="topping-list" id="toppingList"></div>
+        <p class="hint">Tip: drag toppings onto the pizza — or tap/click to auto-place.</p>
+      </aside>
+    </section>
+  </main>
 
-  <script>
-    // Toast
-    const toast = document.getElementById('toast');
-    function showToast(msg) {
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 1400);
-    }
+  <div id="endScreen" class="screen hidden">
+    <h2>Shift Complete! 🛎️</h2>
+    <p>Your final score: <strong id="finalScore">0</strong></p>
+    <button id="btnRestart" class="btn primary">🔁 Play Again</button>
+  </div>
 
-    // Elements
-    const welcomeScreen = document.getElementById('welcomeScreen');
-    const orderScreen   = document.getElementById('orderScreen');
-    const kitchenScreen = document.getElementById('kitchenScreen');
+  <footer class="app-footer">
+    <details>
+      <summary>How to Play</summary>
+      <ul>
+        <li>Read the order ticket.</li>
+        <li>Add toppings to the pizza to match <em>type</em> and <em>counts</em>.</li>
+        <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
+        <li>You have 60 seconds per shift. Keep the streak alive for extra score.</li>
+      </ul>
+    </details>
+  </footer>
 
-    const orderHeading  = document.getElementById('orderHeading');
-    const orderText     = document.getElementById('orderText');
-    const feedbackText  = document.getElementById('feedbackText');
-
-    const playBtn       = document.getElementById('playBtn');
-    const startBtn      = document.getElementById('startBtn');
-    const nextOrderBtn  = document.getElementById('nextOrderBtn');
-    const backToOrderBtn= document.getElementById('backToOrderBtn');
-    const clearBtn      = document.getElementById('clearBtn');
-    const bakeBtn       = document.getElementById('bakeBtn');
-
-    const bakeTimeInput = document.getElementById('bakeTime');
-    const bakeDisplay   = document.getElementById('bakeDisplay');
-
-    const pizzaArea     = document.getElementById('pizzaArea');
-    const palette       = document.getElementById('palette');
-
-    // Data
-    const INGREDIENTS = [
-      { key: 'cheese',    label: 'Cheese' },
-      { key: 'pepperoni', label: 'Pepperoni' },
-      { key: 'mushroom',  label: 'Mushrooms' },
-      { key: 'olive',     label: 'Olives' },
-      { key: 'pepper',    label: 'Peppers' },
-      { key: 'onion',     label: 'Onions' },
-    ];
-
-    let requiredToppings = [];   // array of keys
-    let requiredBakeTime = 10;   // seconds
-    let placed = [];             // topping elements
-
-    // Order generation
-    function generateOrder() {
-      requiredToppings = ['cheese'];
-      const extras = INGREDIENTS.map(i => i.key).filter(k => k !== 'cheese');
-      const extraCount = 1 + Math.floor(Math.random() * 3); // 1..3
-
-      while (requiredToppings.length < extraCount + 1) {
-        const pick = extras[Math.floor(Math.random() * extras.length)];
-        if (!requiredToppings.includes(pick)) requiredToppings.push(pick);
-      }
-
-      requiredBakeTime = 10 + Math.floor(Math.random() * 21); // 10..30
-
-      orderHeading.textContent = 'Customer Order';
-      feedbackText.classList.add('hidden');
-      nextOrderBtn.classList.add('hidden');
-
-      orderText.textContent = \`Toppings: \${requiredToppings
-        .map(k => INGREDIENTS.find(i => i.key === k).label).join(', ')} · Bake Time: \${requiredBakeTime}s\`;
-    }
-
-    // Palette
-    function renderPalette() {
-      palette.innerHTML = '';
-      INGREDIENTS.forEach(item => {
-        const btn = document.createElement('button');
-        btn.className = 'tbtn';
-        btn.textContent = item.label;
-        btn.addEventListener('click', () => addTopping(item.key));
-        palette.appendChild(btn);
-      });
-    }
-
-    // Add topping
-    function addTopping(type) {
-      const rect = pizzaArea.getBoundingClientRect();
-      const size = 28;
-      const x = Math.random() * (rect.width - size - 12) + 6;
-      const y = Math.random() * (rect.height - size - 12) + 6;
-
-      const el = document.createElement('div');
-      el.className = \`topping \${type}\`;
-      el.style.left = \`\${x}px\`;
-      el.style.top = \`\${y}px\`;
-      el.dataset.type = type;
-
-      el.title = 'Double-click to remove';
-      el.addEventListener('dblclick', () => {
-        const idx = placed.indexOf(el);
-        if (idx >= 0) placed.splice(idx, 1);
-        el.remove();
-      });
-
-      pizzaArea.appendChild(el);
-      placed.push(el);
-    }
-
-    // Evaluation
-    function evaluatePizza() {
-      const placedTypes = new Set(placed.map(el => el.dataset.type));
-      const requiredSet = new Set(requiredToppings);
-
-      const missing = [...requiredSet].filter(x => !placedTypes.has(x));
-      const extra   = [...placedTypes].filter(x => !requiredSet.has(x));
-
-      const userBake = parseInt(bakeTimeInput.value, 10);
-      const timeOK   = userBake === requiredBakeTime;
-      const toppingsOK = missing.length === 0 && extra.length === 0;
-
-      return { toppingsOK, timeOK, missing, extra, userBake };
-    }
-
-    // Navigation
-    playBtn.addEventListener('click', () => {
-      welcomeScreen.classList.add('hidden');
-      orderScreen.classList.remove('hidden');
-      showToast('New customer arrived! 👋');
-      generateOrder();
-    });
-
-    startBtn.addEventListener('click', () => {
-      orderScreen.classList.add('hidden');
-      kitchenScreen.classList.remove('hidden');
-      showToast('Into the kitchen! 🍳');
-    });
-
-    backToOrderBtn.addEventListener('click', () => {
-      kitchenScreen.classList.add('hidden');
-      orderScreen.classList.remove('hidden');
-    });
-
-    nextOrderBtn.addEventListener('click', () => {
-      pizzaArea.innerHTML = '';
-      placed = [];
-      bakeTimeInput.value = 10;
-      bakeDisplay.textContent = bakeTimeInput.value;
-      generateOrder();
-    });
-
-    // Actions
-    clearBtn.addEventListener('click', () => {
-      pizzaArea.innerHTML = '';
-      placed = [];
-      showToast('Cleared!');
-    });
-
-    bakeBtn.addEventListener('click', () => {
-      const { toppingsOK, timeOK, missing, extra, userBake } = evaluatePizza();
-
-      let msg;
-      if (toppingsOK && timeOK) {
-        msg = 'Perfect! You nailed the order! 🎉';
-      } else {
-        const parts = [];
-        if (!toppingsOK) {
-          if (missing.length) parts.push(\`Missing: \${missing.map(k => INGREDIENTS.find(i => i.key === k).label).join(', ')}\`);
-          if (extra.length)   parts.push(\`Extra: \${extra.map(k => INGREDIENTS.find(i => i.key === k).label).join(', ')}\`);
-        }
-        if (!timeOK) parts.push(\`Bake time was \${userBake}s (needed \${requiredBakeTime}s)\`);
-        msg = parts.join(' • ');
-      }
-
-      // Show feedback on ORDER screen
-      feedbackText.textContent = msg;
-      feedbackText.classList.remove('hidden');
-      orderHeading.textContent = 'Customer Feedback';
-
-      kitchenScreen.classList.add('hidden');
-      orderScreen.classList.remove('hidden');
-      nextOrderBtn.classList.remove('hidden');
-    });
-
-    // Bake time display
-    bakeTimeInput.addEventListener('input', () => {
-      bakeDisplay.textContent = bakeTimeInput.value;
-    });
-
-    // Init (render the palette; welcome screen is default visible)
-    renderPalette();
-    bakeDisplay.textContent = bakeTimeInput.value;
-  </script>
+  <script src="script.js" defer></script>
 </body>
 </html>
-
