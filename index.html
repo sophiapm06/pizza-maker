@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea • Photo Intro + Streamlined v5</title>
+  <title>Sophia's Pizzariea • Photo Intro + Streamlined v5 + Customer Mini</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div class="intro">
       <div class="intro-wrap">
         <figure class="avatar-frame" aria-label="Animated intro avatar">
-          <img src="Designer.png" alt="Intro avatar" class="avatar-img" />
+          <img src="full_arm_wave.gif" alt="Intro avatar" class="avatar-img" />
         </figure>
         <div class="intro-bubble" role="text">Hi, welcome to Sophia’s Pizzariea — please come to the kitchen! 👋</div>
       </div>
@@ -32,10 +32,22 @@
   <!-- Game area -->
   <main id="game" class="hidden">
     <section class="work-area">
-      <!-- Left: toppings palette -->
-      <aside class="palette card" id="palette">
-        <h2>Toppings</h2>
-        <div class="topping-list" id="toppingList"></div>
+      <!-- Left column: customer mini + toppings palette -->
+      <aside>
+        <!-- Customer mini widget -->
+        <div class="customer-mini card" id="customerMini">
+          <div class="mini-row">
+            <img src="full_arm_wave.gif" alt="Customer" class="customer-img" />
+            <div class="mini-bubble" id="miniBubble">…</div>
+          </div>
+          <button id="btnSpeak" class="btn mini">🔈</button>
+        </div>
+
+        <!-- Toppings palette -->
+        <div class="palette card" id="palette">
+          <h2>Toppings</h2>
+          <div class="topping-list" id="toppingList"></div>
+        </div>
       </aside>
 
       <!-- Right: pizza prep -->
@@ -73,7 +85,7 @@
       <summary>How to Play</summary>
       <ul>
         <li>Drag toppings from the left panel onto the pizza on the right.</li>
-        <li>Match the order ticket (smaller card below).</li>
+        <li>Read the small customer bubble for the order, or check the ticket below.</li>
         <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
         <li>You have 90 seconds per shift.</li>
       </ul>

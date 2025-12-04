@@ -12,7 +12,7 @@ if (start && img) {
   start.addEventListener('mouseleave', () => { img.style.transform = ''; });
 }
 
-// Streamlined v5 game logic (90s timer, two-panel layout)
+// Streamlined v5 game logic + small customer mini widget
 const toppings = [
   { key: 'cheese',    name: 'Cheese',     emoji: '\uD83E\uDDC0', min: 1, max: 3 },
   { key: 'pepperoni', name: 'Pepperoni',  emoji: '\uD83C\uDF56', min: 0, max: 5 },
@@ -49,6 +49,11 @@ const endScreen = document.getElementById('endScreen');
 const finalScoreEl = document.getElementById('finalScore');
 const btnRestart   = document.getElementById('btnRestart');
 
+// Customer mini
+const customerMini = document.getElementById('customerMini');
+const miniBubble   = document.getElementById('miniBubble');
+const btnSpeak     = document.getElementById('btnSpeak');
+
 const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -61,6 +66,18 @@ function makeOrder(){
   chosen.forEach(t => { req[t.key] = rand(t.min, t.max); });
   const notes = ['Make it snappy!', 'Extra tasty please.', 'For a hungry cadet.', 'Keep it balanced.', 'No burnt crust!'];
   return { req, note: pick(notes) };
+}
+
+function orderToText(req){
+  const parts = [];
+  Object.keys(req).forEach(k => { const c = req[k]; if (c > 0) { const name = toppings.find(t => t.key === k).name; parts.push(name + ' x' + c); } });
+  return parts.length ? parts.join(', ') : 'Cheese only';
+}
+
+function renderCustomerMini(text){
+  miniBubble.textContent = text;
+  customerMini.classList.add('talking');
+  setTimeout(() => customerMini.classList.remove('talking'), 1200);
 }
 
 function renderOrder(){
@@ -145,6 +162,7 @@ function evaluateOrder(){
 
 function nextOrder(){
   clearPizza(); const o = makeOrder(); required = o.req; renderOrder(); orderNotes.textContent = o.note;
+  renderCustomerMini(orderToText(required));
 }
 
 function startGame(){
@@ -164,6 +182,24 @@ btnBake.addEventListener('click', evaluateOrder);
 btnClear.addEventListener('click', () => { clearPizza(); feedbackEl.textContent = 'Cleared.'; });
 btnUndo.addEventListener('click', () => { undoLast(); feedbackEl.textContent = 'Undid last topping.'; });
 btnRestart.addEventListener('click', () => { endScreen.classList.add('hidden'); startGame(); });
+
+// Speak order (mini button) using Web Speech API if available
+if (btnSpeak) {
+  btnSpeak.addEventListener('click', () => {
+    const text = 'Request: ' + orderToText(required);
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      u.rate = 1.0; u.pitch = 1.0; u.lang = 'en-US';
+      speechSynthesis.speak(u);
+      customerMini.classList.add('talking');
+      setTimeout(() => customerMini.classList.remove('talking'), Math.min(3000, Math.max(1200, text.length * 30)));
+    } catch (e) {
+      // Fallback: brief animation only
+      customerMini.classList.add('talking');
+      setTimeout(() => customerMini.classList.remove('talking'), 1200);
+    }
+  });
+}
 
 // Keyboard quick add
 pizzaArea.tabIndex = 0;
