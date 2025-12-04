@@ -1,0 +1,114 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sophia's Pizzariea • Photo Intro (keep) + Streamlined v5 + v4 Customer Mini</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Intro start screen (UNCHANGED: photo-based waving girl) -->
+  <div id="startScreen" class="screen">
+    <div class="intro">
+      <div class="intro-wrap">
+        <figure class="avatar-frame" aria-label="Animated intro avatar">
+          <img src="full_arm_wave.gif" alt="Intro avatar" class="avatar-img" />
+        </figure>
+        <div class="intro-bubble" role="text">Hi, welcome to Sophia’s Pizzariea — please come to the kitchen! 👋</div>
+      </div>
+      <p class="tagline">Click the Play button to start.</p>
+    </div>
+    <button id="btnPlay" class="btn primary">▶ Play</button>
+  </div>
+
+  <!-- HUD -->
+  <header id="hud" class="hidden">
+    <div class="hud-item">⏱️ Time: <span id="time">90</span>s</div>
+    <div class="hud-item">⭐ Score: <span id="score">0</span></div>
+    <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
+  </header>
+
+  <!-- Game area -->
+  <main id="game" class="hidden">
+    <section class="work-area">
+      <!-- Left column: v4-style customer mini + toppings palette -->
+      <aside>
+        <!-- v4-style Customer mini widget (compact) -->
+        <div class="customer-mini card" id="customerMini">
+          <div class="mini-row">
+            <svg viewBox="0 0 220 220" class="mini-customer">
+              <circle cx="110" cy="110" r="105" fill="#ffdbe9" />
+              <circle cx="110" cy="80" r="30" fill="#c48a60" stroke="#a56f47" stroke-width="2" />
+              <circle cx="100" cy="78" r="4.5" fill="#3a2a1e" />
+              <circle cx="120" cy="78" r="4.5" fill="#3a2a1e" />
+              <rect id="custMouthMini" x="104" y="92" width="12" height="4" rx="2" fill="#6e472b" />
+              <rect x="88" y="54" width="44" height="12" rx="6" fill="#39424a" />
+              <rect x="80" y="110" width="60" height="60" rx="12" fill="#7a8b7c" />
+              <rect x="86" y="118" width="24" height="8" fill="#a6b3a8" opacity="0.85" />
+              <rect x="110" y="130" width="26" height="8" fill="#626c61" opacity="0.85" />
+              <rect x="92" y="142" width="34" height="8" fill="#9aa69a" opacity="0.85" />
+              <rect x="120" y="122" width="22" height="8" fill="#6c786d" opacity="0.85" />
+              <g class="salute-arm" transform="translate(138,116)">
+                <rect x="0" y="0" width="14" height="28" rx="7" fill="#7a8b7c" />
+                <rect x="8" y="-2" width="12" height="32" rx="6" fill="#7a8b7c" transform="rotate(-35)" />
+              </g>
+              <rect x="72" y="116" width="14" height="40" rx="7" fill="#7a8b7c" />
+            </svg>
+            <div class="mini-bubble" id="miniBubble">…</div>
+          </div>
+          <button id="btnSpeak" class="btn mini">🔈</button>
+        </div>
+
+        <!-- Toppings palette -->
+        <div class="palette card" id="palette">
+          <h2>Toppings</h2>
+          <div class="topping-list" id="toppingList"></div>
+        </div>
+      </aside>
+
+      <!-- Right: pizza prep -->
+      <section class="kitchen card">
+        <h2>Pizza</h2>
+        <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
+          <div class="pizza-base" aria-hidden="true"></div>
+        </div>
+        <div class="controls">
+          <button id="btnUndo" class="btn">↩ Undo</button>
+          <button id="btnClear" class="btn">🧼 Clear</button>
+          <button id="btnBake" class="btn success">🔥 Bake & Serve</button>
+        </div>
+        <div id="feedback" class="feedback" aria-live="polite"></div>
+      </section>
+    </section>
+
+    <!-- Compact order ticket below -->
+    <aside class="order-card card compact" id="orderCard">
+      <h2>Order Ticket</h2>
+      <ul id="orderList" class="order-list"></ul>
+      <div class="order-notes" id="orderNotes"></div>
+    </aside>
+  </main>
+
+  <!-- End screen -->
+  <div id="endScreen" class="screen hidden">
+    <h2>Shift Complete! 🛎️</h2>
+    <p>Your final score: <strong id="finalScore">0</strong></p>
+    <button id="btnRestart" class="btn primary">🔁 Play Again</button>
+  </div>
+
+  <footer class="app-footer">
+    <details>
+      <summary>How to Play</summary>
+      <ul>
+        <li>Drag toppings from the left panel onto the pizza on the right.</li>
+        <li>Read the small customer bubble for the order, or check the ticket below.</li>
+        <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
+        <li>You have 90 seconds per shift.</li>
+      </ul>
+    </details>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
