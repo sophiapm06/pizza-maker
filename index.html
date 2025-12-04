@@ -3,69 +3,89 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea 🍕</title>
+  <title>Sophia Perez Montoya — Personal Site</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="startScreen" class="screen">
-    <h1>welcomes to sophias pizzariea</h1>
-    <p class="tagline">Click the Play button to start.</p>
-    <button id="btnPlay" class="btn primary">▶ Play</button>
-  </div>
-
-  <header id="hud" class="hidden">
-    <div class="hud-item">⏱️ Time: <span id="time">60</span>s</div>
-    <div class="hud-item">⭐ Score: <span id="score">0</span></div>
-    <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
+  <header class="site-header">
+    <nav class="nav">
+      <a class="brand" href="#home">SOPHIA</a>
+      <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+    <section id="home" class="hero">
+      <h1>Hey, I'm Sophia 👋</h1>
+      <p class="sub">Cadet · Builder · Handball left wing · Python/AI learner</p>
+      <div class="cta">
+        <a class="btn primary" href="#projects">See my projects</a>
+        <a class="btn" href="#contact">Contact me</a>
+      </div>
+    </section>
   </header>
 
-  <main id="game" class="hidden">
-    <section class="station">
-      <aside class="order-card" id="orderCard">
-        <h2>Order Ticket</h2>
-        <ul id="orderList" class="order-list"></ul>
-        <div class="order-notes" id="orderNotes"></div>
-      </aside>
+  <main>
+    <section id="about" class="card">
+      <h2>About</h2>
+      <p>
+        I'm a Colombian plebe at USMA who loves speed—on the court and in code. I’m learning Python,
+        web fundamentals, and building small interactive things to make learning fun. I also study
+        military battle drills, modeling ethics, and modern history.
+      </p>
+      <ul class="tags">
+        <li>Python</li><li>HTML/CSS/JS</li><li>AI</li><li>Handball</li><li>History</li>
+      </ul>
+    </section>
 
-      <section class="kitchen">
-        <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
-          <div class="pizza-base" aria-hidden="true"></div>
-        </div>
+    <section id="projects" class="card">
+      <h2>Projects</h2>
+      <div class="grid">
+        <article class="tile">
+          <h3>🍕 Sophia’s Pizzariea</h3>
+          <p>A mini pizza game: drag toppings, bake & serve. Keep your streak for extra points!</p>
+          <button class="btn" id="launchPizza">Play in-page</button>
+        </article>
+        <article class="tile">
+          <h3>📊 Modeling Practice</h3>
+          <p>Notes on SSE, R², and ethical modeling decisions in first-principles vs empirical approaches.</p>
+          <a class="btn" href="#" onclick="alert('Coming soon!')">View</a>
+        </article>
+        <article class="tile">
+          <h3>🛡️ Battle Drill 1A Cheatsheet</h3>
+          <p>Quick reference for squad movement techniques and actions on contact.</p>
+          <a class="btn" href="#" onclick="alert('Coming soon!')">View</a>
+        </article>
+      </div>
+    </section>
 
-        <div class="controls">
-          <button id="btnUndo" class="btn">↩ Undo last</button>
-          <button id="btnClear" class="btn">🧼 Clear</button>
-          <button id="btnBake" class="btn success">🔥 Bake & Serve</button>
-        </div>
-
-        <div id="feedback" class="feedback" aria-live="polite"></div>
-      </section>
-
-      <aside class="palette" id="palette">
-        <h2>Toppings</h2>
-        <div class="topping-list" id="toppingList"></div>
-        <p class="hint">Tip: drag toppings onto the pizza — or tap/click to auto-place.</p>
-      </aside>
+    <section id="contact" class="card">
+      <h2>Contact</h2>
+      <form id="contactForm" class="form">
+        <label>Name<input type="text" name="name" required></label>
+        <label>Email<input type="email" name="email" required></label>
+        <label>Message<textarea name="message" rows="4" required></textarea></label>
+        <button class="btn primary" type="submit">Send</button>
+        <p id="formMsg" class="form-msg" aria-live="polite"></p>
+      </form>
     </section>
   </main>
 
-  <div id="endScreen" class="screen hidden">
-    <h2>Shift Complete! 🛎️</h2>
-    <p>Your final score: <strong id="finalScore">0</strong></p>
-    <button id="btnRestart" class="btn primary">🔁 Play Again</button>
-  </div>
-
-  <footer class="app-footer">
-    <details>
-      <summary>How to Play</summary>
-      <ul>
-        <li>Read the order ticket.</li>
-        <li>Add toppings to the pizza to match <em>type</em> and <em>counts</em>.</li>
-        <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
-        <li>You have 60 seconds per shift. Keep the streak alive for extra score.</li>
-      </ul>
-    </details>
+  <footer class="site-footer">
+    <small>© 2025 Sophia Perez Montoya · Built with HTML/CSS/JS</small>
   </footer>
+
+  <!-- Inline modal for the pizza game -->
+  <dialog id="pizzaModal" class="modal">
+    <div class="modal-header">
+      <h3>welcomes to sophias pizzariea</h3>
+      <button id="closePizza" class="btn">✖</button>
+    </div>
+    <iframe title="Sophia’s Pizzariea" src="pizzariea/index.html" class="modal-iframe"></iframe>
+  </dialog>
 
   <script src="script.js" defer></script>
 </body>
