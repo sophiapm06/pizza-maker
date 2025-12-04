@@ -4,76 +4,95 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea • Photo Intro + Streamlined v5 + Customer Mini</title>
+  <title>Sophia's Pizzariea 🍕</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Intro start screen -->
   <div id="startScreen" class="screen">
     <div class="intro">
-      <div class="intro-wrap">
-        <figure class="avatar-frame" aria-label="Animated intro avatar">
-          <img src="full_arm_wave.gif" alt="Intro avatar" class="avatar-img" />
-        </figure>
-        <div class="intro-bubble" role="text">Hi, welcome to Sophia’s Pizzariea — please come to the kitchen! 👋</div>
+      <div class="avatar" aria-label="Cartoon Hispanic girl in Army ACUs, ponytail, strap, boots, thumbs-up">
+        <svg viewBox="0 0 240 240" role="img" aria-labelledby="svgTitle svgDesc">
+          <title id="svgTitle">Cartoon avatar</title>
+          <desc id="svgDesc">Hispanic girl in ACUs, ponytail, strap, tan boots, thumbs-up</desc>
+          <circle cx="120" cy="120" r="112" fill="#ffe4ee" />
+          <path d="M52,92 C54,52 186,52 188,92 C190,128 160,168 120,168 C80,168 50,128 52,92 Z" fill="#5b3b24" />
+          <path d="M168,110 C184,128 182,150 164,160 C156,164 148,162 146,150 C144,136 152,122 168,110 Z" fill="#5b3b24" />
+          <circle cx="120" cy="104" r="36" fill="#c89065" stroke="#b2774f" stroke-width="2" />
+          <circle cx="106" cy="102" r="5" fill="#3a2a1e" />
+          <circle cx="134" cy="102" r="5" fill="#3a2a1e" />
+          <path d="M106,118 C114,124 126,124 134,118" stroke="#6e472b" stroke-width="3" fill="none" stroke-linecap="round" />
+          <rect x="88" y="148" width="64" height="60" rx="12" fill="#7a8b7c" />
+          <rect x="92" y="154" width="24" height="10" fill="#a6b3a8" opacity="0.85" />
+          <rect x="118" y="168" width="26" height="10" fill="#626c61" opacity="0.85" />
+          <rect x="98" y="180" width="34" height="10" fill="#9aa69a" opacity="0.85" />
+          <rect x="130" y="158" width="24" height="10" fill="#6c786d" opacity="0.85" />
+          <path d="M150,148 C160,138 168,132 175,132 C180,132 182,136 180,140 C172,154 166,164 154,172" stroke="#2f2f37" stroke-width="8" stroke-linecap="round" fill="none" opacity="0.95" />
+          <rect x="72" y="160" width="16" height="52" rx="8" fill="#7a8b7c" />
+          <g transform="translate(152,156)">
+            <rect x="0" y="0" width="16" height="28" rx="8" fill="#7a8b7c" />
+            <rect x="8" y="-2" width="14" height="34" rx="7" fill="#7a8b7c" transform="rotate(-30)" />
+            <path d="M26,-6 C30,-8 34,-6 34,-2 C34,2 30,6 26,4 C24,2 24,-2 26,-6 Z" fill="#c89065" stroke="#b2774f" stroke-width="2" />
+          </g>
+          <rect x="98" y="206" width="44" height="20" rx="6" fill="#7a8b7c" />
+          <ellipse cx="110" cy="228" rx="10" ry="8" fill="#a07b4a" />
+          <ellipse cx="130" cy="228" rx="10" ry="8" fill="#a07b4a" />
+        </svg>
       </div>
+      <h1 class="cute-title">Hi welcome to sophias pizzarea pls com to the kitchen</h1>
       <p class="tagline">Click the Play button to start.</p>
     </div>
     <button id="btnPlay" class="btn primary">▶ Play</button>
   </div>
 
-  <!-- HUD -->
   <header id="hud" class="hidden">
-    <div class="hud-item">⏱️ Time: <span id="time">90</span>s</div>
+    <div class="hud-item">⏱️ Time: <span id="time">60</span>s</div>
     <div class="hud-item">⭐ Score: <span id="score">0</span></div>
     <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
   </header>
 
-  <!-- Game area -->
   <main id="game" class="hidden">
-    <section class="work-area">
-      <!-- Left column: customer mini + toppings palette -->
-      <aside>
-        <!-- Customer mini widget -->
-        <div class="customer-mini card" id="customerMini">
-          <div class="mini-row">
-            <img src="full_arm_wave.gif" alt="Customer" class="customer-img" />
-            <div class="mini-bubble" id="miniBubble">…</div>
-          </div>
-          <button id="btnSpeak" class="btn mini">🔈</button>
-        </div>
-
-        <!-- Toppings palette -->
-        <div class="palette card" id="palette">
-          <h2>Toppings</h2>
-          <div class="topping-list" id="toppingList"></div>
+    <section class="station">
+      <!-- CUSTOMER QUEUE LEFT -->
+      <aside class="customer card" id="customerCard" aria-label="Customer order">
+        <h2>Customer</h2>
+        <div id="customerFigure" class="customer-figure" aria-hidden="true"></div>
+        <div id="orderBubble" class="speech-bubble">…</div>
+        <div class="tts-controls">
+          <label>Voice <select id="voiceSelect"></select></label>
+          <label>Rate <input type="range" id="voiceRate" min="0.5" max="1.5" step="0.1" value="1.0" /></label>
+          <label>Pitch <input type="range" id="voicePitch" min="0.8" max="1.4" step="0.1" value="1.0" /></label>
+          <button id="btnSpeak" class="btn">🔈 Speak order</button>
         </div>
       </aside>
 
-      <!-- Right: pizza prep -->
-      <section class="kitchen card">
-        <h2>Pizza</h2>
+      <!-- ORDER TICKET RIGHT -->
+      <aside class="order-card card" id="orderCard">
+        <h2>Order Ticket</h2>
+        <ul id="orderList" class="order-list"></ul>
+        <div class="order-notes" id="orderNotes"></div>
+      </aside>
+
+      <!-- KITCHEN CENTER -->
+      <section class="kitchen">
         <div id="pizzaArea" class="pizza-area" aria-label="Pizza prep area" role="region">
           <div class="pizza-base" aria-hidden="true"></div>
         </div>
         <div class="controls">
-          <button id="btnUndo" class="btn">↩ Undo</button>
+          <button id="btnUndo" class="btn">↩ Undo last</button>
           <button id="btnClear" class="btn">🧼 Clear</button>
           <button id="btnBake" class="btn success">🔥 Bake & Serve</button>
         </div>
         <div id="feedback" class="feedback" aria-live="polite"></div>
       </section>
-    </section>
 
-    <!-- Compact order ticket below -->
-    <aside class="order-card card compact" id="orderCard">
-      <h2>Order Ticket</h2>
-      <ul id="orderList" class="order-list"></ul>
-      <div class="order-notes" id="orderNotes"></div>
-    </aside>
+      <aside class="palette card" id="palette">
+        <h2>Toppings</h2>
+        <div class="topping-list" id="toppingList"></div>
+        <p class="hint">Tip: drag toppings onto the pizza — or tap/click to auto-place.</p>
+      </aside>
+    </section>
   </main>
 
-  <!-- End screen -->
   <div id="endScreen" class="screen hidden">
     <h2>Shift Complete! 🛎️</h2>
     <p>Your final score: <strong id="finalScore">0</strong></p>
@@ -84,10 +103,10 @@
     <details>
       <summary>How to Play</summary>
       <ul>
-        <li>Drag toppings from the left panel onto the pizza on the right.</li>
-        <li>Read the small customer bubble for the order, or check the ticket below.</li>
+        <li>Read the customer bubble or the order ticket.</li>
+        <li>Add toppings to the pizza to match <em>type</em> and <em>counts</em>.</li>
         <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
-        <li>You have 90 seconds per shift.</li>
+        <li>You have 60 seconds per shift. Keep the streak alive for extra score.</li>
       </ul>
     </details>
   </footer>
