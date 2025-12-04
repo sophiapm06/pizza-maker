@@ -12,7 +12,37 @@ if (start && img) {
   start.addEventListener('mouseleave', () => { img.style.transform = ''; });
 }
 
-// Streamlined v5 game logic + v4-style small customer mini widget
+// Elements for screens
+const startScreen = document.getElementById('startScreen');
+const customerScreen = document.getElementById('customerScreen');
+const hud = document.getElementById('hud');
+const gameEl = document.getElementById('game');
+
+// HUD elements
+const timeEl = document.getElementById('time');
+const scoreEl = document.getElementById('score');
+const streakEl = document.getElementById('streak');
+
+// Buttons
+const btnPlay = document.getElementById('btnPlay');
+const btnSpeakOrder = document.getElementById('btnSpeakOrder');
+const btnContinue = document.getElementById('btnContinue');
+const btnUndo = document.getElementById('btnUndo');
+const btnBake = document.getElementById('btnBake');
+const btnClear = document.getElementById('btnClear');
+const btnRestart = document.getElementById('btnRestart');
+
+// Kitchen elements
+const orderList = document.getElementById('orderList');
+const orderNotes = document.getElementById('orderNotes');
+const pizzaArea = document.getElementById('pizzaArea');
+const toppingListEl = document.getElementById('toppingList');
+const feedbackEl = document.getElementById('feedback');
+
+// Customer talk bubble
+const customerBubble = document.getElementById('customerBubble');
+
+// Game state
 const toppings = [
   { key: 'cheese',    name: 'Cheese',     emoji: '\uD83E\uDDC0', min: 1, max: 3 },
   { key: 'pepperoni', name: 'Pepperoni',  emoji: '\uD83C\uDF56', min: 0, max: 5 },
@@ -27,33 +57,10 @@ let required = {};
 let placed = [];
 let score = 0;
 let streak = 0;
-let timeLeft = 90; // 90-second shift
+let timeLeft = 90; // starts AFTER transition to kitchen
 let timerId = null;
 
-// Elements
-const btnPlay   = document.getElementById('btnPlay');
-const hud       = document.getElementById('hud');
-const timeEl    = document.getElementById('time');
-const scoreEl   = document.getElementById('score');
-const streakEl  = document.getElementById('streak');
-const gameEl    = document.getElementById('game');
-const orderList = document.getElementById('orderList');
-const orderNotes= document.getElementById('orderNotes');
-const pizzaArea = document.getElementById('pizzaArea');
-const toppingListEl = document.getElementById('toppingList');
-const feedbackEl    = document.getElementById('feedback');
-const btnUndo   = document.getElementById('btnUndo');
-const btnBake   = document.getElementById('btnBake');
-const btnClear  = document.getElementById('btnClear');
-const endScreen = document.getElementById('endScreen');
-const finalScoreEl = document.getElementById('finalScore');
-const btnRestart   = document.getElementById('btnRestart');
-
-// Customer mini
-const customerMini = document.getElementById('customerMini');
-const miniBubble   = document.getElementById('miniBubble');
-const btnSpeak     = document.getElementById('btnSpeak');
-
+// Utils
 const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -72,12 +79,6 @@ function orderToText(req){
   const parts = [];
   Object.keys(req).forEach(k => { const c = req[k]; if (c > 0) { const name = toppings.find(t => t.key === k).name; parts.push(name + ' x' + c); } });
   return parts.length ? parts.join(', ') : 'Cheese only';
-}
-
-function renderCustomerMini(text){
-  miniBubble.textContent = text;
-  customerMini.classList.add('talking');
-  setTimeout(() => customerMini.classList.remove('talking'), 1200);
 }
 
 function renderOrder(){
@@ -134,7 +135,7 @@ pizzaArea.addEventListener('drop', ev => {
 });
 
 function clearPizza(){ placed.forEach(p => p.el.remove()); placed = []; }
-function undoLast(){ const last = placed.pop(); if(last && last.el) last.el.remove(); }
+function undoLast(){ const last = placed.pop(); if (last && last.el) last.el.remove(); }
 
 function countsByKey(arr){ const map = {}; toppings.forEach(t => map[t.key] = 0); arr.forEach(p => { map[p.key] = (map[p.key] || 0) + 1; }); return map; }
 
@@ -148,7 +149,7 @@ function evaluateOrder(){
     }
   });
   if (perfect){
-    const bonus = 100 + streak * 25 + Math.max(0, timeLeft - 60); // slight bonus for speed
+    const bonus = 100 + streak * 25 + Math.max(0, timeLeft - 60);
     score += bonus; streak += 1; scoreEl.textContent = score; streakEl.textContent = streak;
     feedbackEl.textContent = 'Perfect! +' + bonus + ' points';
     nextOrder();
@@ -162,43 +163,59 @@ function evaluateOrder(){
 
 function nextOrder(){
   clearPizza(); const o = makeOrder(); required = o.req; renderOrder(); orderNotes.textContent = o.note;
-  renderCustomerMini(orderToText(required));
 }
 
-function startGame(){
-  document.getElementById('startScreen').classList.add('hidden');
+function showScreen(hideEl, showEl){
+  if (!hideEl.classList.contains('hidden')){
+    hideEl.classList.add('fade-exit');
+    setTimeout(() => { hideEl.classList.add('hidden'); hideEl.classList.remove('fade-exit'); showEl.classList.remove('hidden'); showEl.classList.add('fade-enter'); setTimeout(() => showEl.classList.remove('fade-enter'), 360); }, 280);
+  } else {
+    hideEl.classList.add('hidden'); showEl.classList.remove('hidden');
+  }
+}
+
+function startFlow(){
+  // Generate the first customer order
+  const o = makeOrder(); required = o.req; const text = 'Request: ' + orderToText(required);
+  customerBubble.textContent = text;
+  // Transition: Intro → Customer
+  showScreen(startScreen, customerScreen);
+  // Brief mouth animation
+  customerScreen.classList.add('talking');
+  setTimeout(() => customerScreen.classList.remove('talking'), Math.min(4000, Math.max(1500, text.length * 35)));
+}
+
+function continueToKitchen(){
+  // Transition: Customer → Kitchen; start HUD + timer
+  showScreen(customerScreen, gameEl);
   hud.classList.remove('hidden');
-  gameEl.classList.remove('hidden');
   score = 0; streak = 0; timeLeft = 90; placed = [];
   scoreEl.textContent = score; streakEl.textContent = streak; timeEl.textContent = timeLeft;
-  renderPalette(); nextOrder(); if (timerId) clearInterval(timerId);
+  renderPalette(); renderOrder(); orderNotes.textContent = 'Fresh order just in!';
+  if (timerId) clearInterval(timerId);
   timerId = setInterval(() => { timeLeft -= 1; timeEl.textContent = timeLeft; if (timeLeft <= 0) endGame(); }, 1000);
 }
 
-function endGame(){ if (timerId) clearInterval(timerId); hud.classList.add('hidden'); gameEl.classList.add('hidden'); endScreen.classList.remove('hidden'); finalScoreEl.textContent = score; }
+function endGame(){ if (timerId) clearInterval(timerId); hud.classList.add('hidden'); gameEl.classList.add('hidden'); document.getElementById('endScreen').classList.remove('hidden'); document.getElementById('finalScore').textContent = score; }
 
-btnPlay.addEventListener('click', startGame);
+// Events
+btnPlay.addEventListener('click', startFlow);
+btnSpeakOrder.addEventListener('click', () => {
+  const text = customerBubble.textContent;
+  try {
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = 1.0; u.pitch = 1.0; u.lang = 'en-US';
+    speechSynthesis.speak(u);
+    customerScreen.classList.add('talking');
+    setTimeout(() => customerScreen.classList.remove('talking'), Math.min(4000, Math.max(1500, text.length * 35)));
+  } catch (e) { /* no-op */ }
+});
+btnContinue.addEventListener('click', continueToKitchen);
+
 btnBake.addEventListener('click', evaluateOrder);
 btnClear.addEventListener('click', () => { clearPizza(); feedbackEl.textContent = 'Cleared.'; });
 btnUndo.addEventListener('click', () => { undoLast(); feedbackEl.textContent = 'Undid last topping.'; });
-btnRestart.addEventListener('click', () => { endScreen.classList.add('hidden'); startGame(); });
-
-// Speak order (mini button) using Web Speech API if available
-if (btnSpeak) {
-  btnSpeak.addEventListener('click', () => {
-    const text = 'Request: ' + orderToText(required);
-    try {
-      const u = new SpeechSynthesisUtterance(text);
-      u.rate = 1.0; u.pitch = 1.0; u.lang = 'en-US';
-      speechSynthesis.speak(u);
-      customerMini.classList.add('talking');
-      setTimeout(() => customerMini.classList.remove('talking'), Math.min(3000, Math.max(1200, text.length * 30)));
-    } catch (e) {
-      customerMini.classList.add('talking');
-      setTimeout(() => customerMini.classList.remove('talking'), 1200);
-    }
-  });
-}
+btnRestart.addEventListener('click', () => { document.getElementById('endScreen').classList.add('hidden'); showScreen(document.getElementById('endScreen'), startScreen); });
 
 // Keyboard quick add
 pizzaArea.tabIndex = 0;

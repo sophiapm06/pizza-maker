@@ -4,11 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea • Photo Intro (keep) + Streamlined v5 + v4 Customer Mini</title>
+  <title>Sophia's Pizzariea • Intro → Customer → Kitchen</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Intro start screen (UNCHANGED: photo-based waving girl) -->
+  <!-- Intro start screen (photo-based waving girl) -->
   <div id="startScreen" class="screen">
     <div class="intro">
       <div class="intro-wrap">
@@ -22,6 +22,44 @@
     <button id="btnPlay" class="btn primary">▶ Play</button>
   </div>
 
+  <!-- Customer screen: v4-style military avatar speaks the order, then continue -->
+  <div id="customerScreen" class="screen hidden">
+    <div class="customer-stage">
+      <div class="customer-figure">
+        <svg viewBox="0 0 240 240" class="big-customer">
+          <circle cx="120" cy="120" r="110" fill="#ffdbe9" />
+          <!-- head -->
+          <circle cx="120" cy="84" r="32" fill="#c48a60" stroke="#a56f47" stroke-width="2" />
+          <!-- eyes -->
+          <circle cx="108" cy="82" r="5" fill="#3a2a1e" />
+          <circle cx="132" cy="82" r="5" fill="#3a2a1e" />
+          <!-- mouth animates while talking -->
+          <rect id="custMouthTalk" x="114" y="98" width="12" height="5" rx="2" fill="#6e472b" />
+          <!-- cap -->
+          <rect x="96" y="56" width="48" height="14" rx="7" fill="#39424a" />
+          <!-- torso ACUs -->
+          <rect x="92" y="120" width="60" height="64" rx="12" fill="#7a8b7c" />
+          <rect x="98" y="128" width="24" height="9" fill="#a6b3a8" opacity="0.85" />
+          <rect x="122" y="142" width="26" height="9" fill="#626c61" opacity="0.85" />
+          <rect x="104" y="156" width="34" height="9" fill="#9aa69a" opacity="0.85" />
+          <rect x="132" y="134" width="22" height="9" fill="#6c786d" opacity="0.85" />
+          <!-- salute arm -->
+          <g class="salute-arm" transform="translate(152,126)">
+            <rect x="0" y="0" width="16" height="30" rx="8" fill="#7a8b7c" />
+            <rect x="8" y="-2" width="12" height="34" rx="7" fill="#7a8b7c" transform="rotate(-35)" />
+          </g>
+          <!-- left arm -->
+          <rect x="84" y="126" width="16" height="44" rx="8" fill="#7a8b7c" />
+        </svg>
+      </div>
+      <div id="customerBubble" class="speech-bubble">…</div>
+      <div class="stage-controls">
+        <button id="btnSpeakOrder" class="btn">🔈 Speak</button>
+        <button id="btnContinue" class="btn primary">➡ Continue to Kitchen</button>
+      </div>
+    </div>
+  </div>
+
   <!-- HUD -->
   <header id="hud" class="hidden">
     <div class="hud-item">⏱️ Time: <span id="time">90</span>s</div>
@@ -29,42 +67,13 @@
     <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
   </header>
 
-  <!-- Game area -->
+  <!-- Kitchen game (streamlined v5) -->
   <main id="game" class="hidden">
     <section class="work-area">
-      <!-- Left column: v4-style customer mini + toppings palette -->
-      <aside>
-        <!-- v4-style Customer mini widget (compact) -->
-        <div class="customer-mini card" id="customerMini">
-          <div class="mini-row">
-            <svg viewBox="0 0 220 220" class="mini-customer">
-              <circle cx="110" cy="110" r="105" fill="#ffdbe9" />
-              <circle cx="110" cy="80" r="30" fill="#c48a60" stroke="#a56f47" stroke-width="2" />
-              <circle cx="100" cy="78" r="4.5" fill="#3a2a1e" />
-              <circle cx="120" cy="78" r="4.5" fill="#3a2a1e" />
-              <rect id="custMouthMini" x="104" y="92" width="12" height="4" rx="2" fill="#6e472b" />
-              <rect x="88" y="54" width="44" height="12" rx="6" fill="#39424a" />
-              <rect x="80" y="110" width="60" height="60" rx="12" fill="#7a8b7c" />
-              <rect x="86" y="118" width="24" height="8" fill="#a6b3a8" opacity="0.85" />
-              <rect x="110" y="130" width="26" height="8" fill="#626c61" opacity="0.85" />
-              <rect x="92" y="142" width="34" height="8" fill="#9aa69a" opacity="0.85" />
-              <rect x="120" y="122" width="22" height="8" fill="#6c786d" opacity="0.85" />
-              <g class="salute-arm" transform="translate(138,116)">
-                <rect x="0" y="0" width="14" height="28" rx="7" fill="#7a8b7c" />
-                <rect x="8" y="-2" width="12" height="32" rx="6" fill="#7a8b7c" transform="rotate(-35)" />
-              </g>
-              <rect x="72" y="116" width="14" height="40" rx="7" fill="#7a8b7c" />
-            </svg>
-            <div class="mini-bubble" id="miniBubble">…</div>
-          </div>
-          <button id="btnSpeak" class="btn mini">🔈</button>
-        </div>
-
-        <!-- Toppings palette -->
-        <div class="palette card" id="palette">
-          <h2>Toppings</h2>
-          <div class="topping-list" id="toppingList"></div>
-        </div>
+      <!-- Left: toppings palette -->
+      <aside class="palette card" id="palette">
+        <h2>Toppings</h2>
+        <div class="topping-list" id="toppingList"></div>
       </aside>
 
       <!-- Right: pizza prep -->
@@ -101,9 +110,9 @@
     <details>
       <summary>How to Play</summary>
       <ul>
-        <li>Drag toppings from the left panel onto the pizza on the right.</li>
-        <li>Read the small customer bubble for the order, or check the ticket below.</li>
-        <li>Click <strong>Bake &amp; Serve</strong> to submit — perfect matches earn bonus points!</li>
+        <li>Press <strong>Play</strong> to meet the customer and hear their order.</li>
+        <li>Continue to the kitchen and match the ticket (types & counts).</li>
+        <li>Drag toppings or click to auto-place; then <strong>Bake & Serve</strong>.</li>
         <li>You have 90 seconds per shift.</li>
       </ul>
     </details>
