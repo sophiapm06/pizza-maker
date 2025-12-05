@@ -4,16 +4,16 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sophia's Pizzariea • v6.3 (Intro photo update)</title>
+  <title>Sophia's Pizzariea • v6.2 (Cheese fix + Icon palette)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Intro (photo updated) -->
+  <!-- Intro (photo unchanged) -->
   <div id="startScreen" class="screen">
     <div class="intro">
       <div class="intro-wrap">
-        <figure class="avatar-frame" aria-label="Pizzeria intro avatar">
-          <img src="Designer (2).png" alt="Intro avatar" class="avatar-img" />
+        <figure class="avatar-frame" aria-label="Animated intro avatar">
+          <img src="full_arm_wave.gif" alt="Intro avatar" class="avatar-img" />
         </figure>
         <div class="intro-bubble" role="text">Hi, welcome to Sophia’s Pizzariea — please come to the kitchen! 👋</div>
       </div>
@@ -22,7 +22,7 @@
     <button id="btnPlay" class="btn primary">▶ Play</button>
   </div>
 
-  <!-- Customer cutscene -->
+  <!-- Customer cutscene (unchanged) -->
   <div id="customerScreen" class="screen hidden">
     <div class="customer-stage">
       <div class="customer-figure">
@@ -57,7 +57,7 @@
     <div class="hud-item">🔥 Streak: <span id="streak">0</span></div>
   </header>
 
-  <!-- Kitchen (3 columns) -->
+  <!-- Kitchen: 3 columns (Order | Pizza | Toppings) -->
   <main id="game" class="hidden">
     <section class="work-area three">
       <aside class="order-card card compact" id="orderCard">
@@ -68,7 +68,7 @@
 
       <section class="kitchen card">
         <h2>Pizza</h2>
-        <div id="pizzaArea" class="pizza-area" role="region">
+        <div id="pizzaArea" class="pizza-area" role="region" aria-label="Pizza prep area">
           <div class="pizza-base" aria-hidden="true"></div>
         </div>
         <div class="controls">
