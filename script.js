@@ -62,7 +62,9 @@ const masterToppings = [
   { key:'anchovy', name:'Anchovy', class:'top-anchovy', icon:'ico-anchovy', min:1, max:4 },
 ];
 
-const levels = [ { time:60, allow:4 }, { time:60, allow:8 }, { time:60, allow:12 } ];
+// === LEVEL TIMES UPDATED ===
+// Level 1: 60s, Level 2: 30s, Level 3: 15s
+const levels = [ { time:60, allow:4 }, { time:30, allow:8 }, { time:15, allow:12 } ];
 let levelIdx = 0;
 let toppings = [];
 let required = {};
@@ -84,7 +86,7 @@ function setupLevel(idx){
 
 function makeOrder(){
   const req = {}; toppings.forEach(t => req[t.key] = 0);
-  req.cheese = rand(1, 3); // cheese works now as visible pieces
+  req.cheese = rand(1, 3);
   const nonCheese = toppings.filter(t => t.key !== 'cheese');
   const howMany = rand(Math.min(2, nonCheese.length), Math.min(4, nonCheese.length));
   const chosen = nonCheese.slice().sort(() => Math.random() - 0.5).slice(0, howMany);
@@ -178,7 +180,7 @@ btnClear.addEventListener('click', () => { clearPizza(); feedbackEl.textContent 
 btnUndo.addEventListener('click', () => { undoLast(); feedbackEl.textContent = 'Undid last topping.'; });
 btnRestart.addEventListener('click', () => { document.getElementById('endScreen').classList.add('hidden'); showScreen(document.getElementById('endScreen'), startScreen); required = {}; placed = []; tipsTotal = 0; matchedPiecesTotal = 0; neededPiecesTotal = 0; streak = 0; tipsEl.textContent = 0; streakEl.textContent = 0; setupLevel(0); });
 
-// Keyboard quick add (includes CHEESE)
+// Keyboard quick add
 pizzaArea.tabIndex = 0;
 pizzaArea.addEventListener('keydown', (ev) => {
   const keys = { '1':'cheese','2':'pepperoni','3':'mushroom','4':'pepper','5':'pineapple','6':'ham','7':'sausage','8':'tomato','9':'bacon','0':'basil' };
